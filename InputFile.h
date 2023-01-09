@@ -5,6 +5,7 @@
 #ifndef ASS2_KNN_INPUTFILE_H
 #define ASS2_KNN_INPUTFILE_H
 #include "string"
+#include "Data.h"
 #include <vector>
 #include <list>
 using namespace std;
@@ -27,6 +28,8 @@ public:
          string* clientInputWork(char clientInput[], string filename, int clientInputSize);
          vector<long double> fromStringVectorToLongDouble(vector<string> stringvactor);
          string * InvalidInputString();
+         bool CanreadFile(const string &path);
+         bool IfKnumAndDistaneGood (const string &path,Data data);
 };
 
 #endif //ASS2_KNN_INPUTFILE_H

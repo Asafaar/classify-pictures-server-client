@@ -36,6 +36,20 @@ string InputFile::readFile(const string &path) {
     return data;
 }
 
+bool InputFile::IfKnumAndDistaneGood (const string &path,Data data){
+
+}
+
+bool InputFile::CanreadFile(const string &path) {
+    ifstream myFile(path);
+    string line;
+    string data;
+    if (myFile.is_open()) {
+        myFile.close();
+        return true;
+    } else return false;
+}
+
 /**kNumIsValid
  * check if the k num if input user is bigger than 0.
  *

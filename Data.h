@@ -5,6 +5,7 @@
 #ifndef ASS4_DATA_H
 #define ASS4_DATA_H
 
+#include <vector>
 #include "string"
 class Data {
 public:
@@ -12,6 +13,7 @@ public:
     std::string* unclassifiedFile=new std::string ;
     std::string* Knum= (std::string *) "5";
     std::string*  dis= (std::string *) "EUC";
+    std::vector<std::string*> classificationVector;
 };
 
 

@@ -3,9 +3,11 @@
 //
 #include "InputFile.h"
 #include "AlgoSettings.h"
-void Command::execute(){
-    this->write("The current KNN parameters are:" + *(this->data->Knum)+ "distance mertic =" +*(this->data->dis) );
-    std::string string=this->read();
+//#include "Command.h"
+
+void AlgoSettings::execute(){
+    this->dio.write("The current KNN parameters are:" + *(this->data->Knum)+ "distance mertic =" +*(this->data->dis) );
+    std::string string=this->dio.read();
     if (string.empty()){
         exit(1);
     }
@@ -20,3 +22,5 @@ AlgoSettings::AlgoSettings(Data *data) {
     this->description="algorithm settings";
     this->data=data;
 }
+
+

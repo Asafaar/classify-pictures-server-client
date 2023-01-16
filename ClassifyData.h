@@ -11,6 +11,8 @@
 class ClassifyData:public Command {
 public:
     ClassifyData(Data* data);
+    void execute() override;
+
 };
 
 

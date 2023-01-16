@@ -9,6 +9,8 @@
 class DownloadResults: public Command {
 public:
     DownloadResults(Data* data);
+    void execute() override;
+
 };
 
 

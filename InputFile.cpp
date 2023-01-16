@@ -41,9 +41,8 @@ bool InputFile::IfKnumAndDistaneGood (const string &path,Data data){
 }
 
 bool InputFile::CanreadFile(const string &path) {
-    ifstream myFile(path);
-    string line;
-    string data;
+    fstream myFile;
+    myFile.open(path,ios::out);
     if (myFile.is_open()) {
         myFile.close();
         return true;
@@ -338,6 +337,17 @@ string *InputFile::InvalidInputString(){
     *stringTemp = "invalid input";
     return stringTemp;
 }
+
+bool InputFile::IfCsvPathToMakeValid(const string &path) {
+    std::ofstream file(path);
+    if (file.good() && path.size() > 4 && path.substr(path.size()-4) == ".csv") {
+        file.close();
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 
 

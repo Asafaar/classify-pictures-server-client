@@ -30,6 +30,7 @@ public:
          string * InvalidInputString();
          bool CanreadFile(const string &path);
          bool IfKnumAndDistaneGood (const string &path,Data data);
+         bool IfCsvPathToMakeValid(const string &path);
 };
 
 #endif //ASS2_KNN_INPUTFILE_H

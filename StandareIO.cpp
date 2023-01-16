@@ -3,13 +3,14 @@
 //
 #include <iostream>
 #include "StandareIO.h"
+#include "DefaultIO.h"
 using namespace std;
-std::string read() {
+std::string DefaultIO::read() {
     std::string string;
     std::cin >> string;
     return string;
 }
 
-void write(std::string string) {
+void DefaultIO::write(std::string string) {
     std::cout <<string<<std::endl;
 }

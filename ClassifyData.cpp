@@ -3,10 +3,9 @@
 //
 #include "InputFile.h"
 #include "ClassifyData.h"
-#include "Data.h"
-void Command::execute(){
+void ClassifyData::execute(){
     if (data->path->empty()){
-        this->write("data upload please");
+        this->dio.write("data upload please");
         exit(0);
     } else {
         InputFile inputFile;

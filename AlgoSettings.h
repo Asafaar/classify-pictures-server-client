@@ -9,6 +9,7 @@
 class AlgoSettings :public Command {
 public:
     AlgoSettings(Data* data);
+    void execute() override;
 };
 
 

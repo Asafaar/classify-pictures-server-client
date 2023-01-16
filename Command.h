@@ -8,12 +8,12 @@
 #include "DefaultIO.h"
 #include "Data.h"
 
-class Command :DefaultIO {
+class Command  {
 public:
         std::string  description;
         DefaultIO dio;
         Data* data;
-       virtual void execute();
+    virtual void execute() ;
 
 };
 

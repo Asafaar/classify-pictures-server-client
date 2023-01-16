@@ -7,24 +7,24 @@
 #include "Upload.h"
 #include "InputFile.h"
 using namespace std;
- void Command::execute(){
-     this->write("Please upload your local train CSV file");
-     std::string string=this->read();
+ void Upload::execute(){
+     this->dio.write("Please upload your local train CSV file");
+     std::string string=this->dio.read();
      InputFile inputfile;
      if (!inputfile.CanreadFile(string)){
-         this->write("input invalid");
+         this->dio.write("input invalid");
          exit(0);
      }
-     this->write("Upload complete");
+     this->dio.write("Upload complete");
      this->data->path=&string;
 
-     this->write("Please upload your local test CSV file");
-     std::string string2=this->read();
+     this->dio.write("Please upload your local test CSV file");
+     std::string string2=this->dio.read();
      if (!inputfile.CanreadFile(string2)){
-         this->write("input invalid");
+         this->dio.write("input invalid");
          exit(0);
      }
-     this->write("Upload complete");
+     this->dio.write("Upload complete");
      this->data->pathsort=&string2;
 
 }

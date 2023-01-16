@@ -9,6 +9,8 @@
 class DisplayResults: public Command {
 public:
     DisplayResults(Data* data);
+    void execute() override;
+
 };
 
 

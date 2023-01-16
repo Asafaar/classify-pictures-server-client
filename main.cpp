@@ -17,7 +17,7 @@ int main(){
     DownloadResults downloadResults(&data);
     ClassifyData classifyData(&data);
     Command command[5]={upload,algoSettings,classifyData,displayResults,downloadResults};
-
+    upload.execute();
 //    upload.changepath("asdf","asdfssss");
 //    cout <<classifyData.pathsort+classifyData.path<<std::endl;
 

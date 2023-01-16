@@ -8,8 +8,8 @@
 #include "string"
 class Data {
 public:
-    std::string* path=new std::string;
-    std::string* pathsort=new std::string ;
+    std::string* classifiedFile=new std::string;
+    std::string* unclassifiedFile=new std::string ;
     std::string* Knum= (std::string *) "5";
     std::string*  dis= (std::string *) "EUC";
 };

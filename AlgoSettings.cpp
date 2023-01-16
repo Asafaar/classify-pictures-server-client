@@ -3,8 +3,8 @@
 //
 #include "InputFile.h"
 #include "AlgoSettings.h"
-
-void stringToArray(string *arr[2], string s) {
+#include <string>
+void AlgoSettings::stringToArray(std::string *arr[2], std::string s) {
     int i = 0;
     char curr = s.at(i);
     while(curr != ' ') {
@@ -17,7 +17,7 @@ void stringToArray(string *arr[2], string s) {
     arr[1] = func;
 }
 
-bool IsAPositiveNumber(string* s) {
+bool AlgoSettings::IsAPositiveNumber(string* s) {
     InputFile inputFile;
     int i = 0;
     if(s->at(i) == '+') {
@@ -33,7 +33,7 @@ bool IsAPositiveNumber(string* s) {
 }
 
 
-void Command::execute(){
+void AlgoSettings::execute(){
     this->dio.write("The current KNN parameters are:" + *(this->data->Knum)+ "distance mertic =" +*(this->data->dis) );
     std::string stringInput=this->dio.read();
     if (stringInput.empty()){

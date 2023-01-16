@@ -11,18 +11,20 @@ DisplayResults::DisplayResults(Data *data) {
 }
 
 void DisplayResults::execute() {
-    if (data->path->empty() or data->pathsort->empty()){
+    if (data->classifiedFile->empty() or data->unclassifiedFile->empty()){
         this->dio.write("data upload please.");
         exit(1);
     }
-    if (data.sortvectrs.empty){
+    if (data->classificationVector.empty()){
         this->dio.write("data the classify please.");
         exit(1);
     }
 
-    //sizeof struct
-    for (int i = 0; i < sizeof(data.sortvecotr); ++i) {
-        this->dio.write(i+" "+data.sortvecotr[i].sort+"\n");
+    int size=sizeof(data->classificationVector);
+    for (int i = 0; i < size; ++i){
+        int j=i+1;
+        std::string string1=j+"  "+ *(data->classificationVector.at(i))+"\n";
+        this->dio.write(string1);
     }
     this->dio.write("Done.");
 

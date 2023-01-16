@@ -7,7 +7,7 @@
 #include "Upload.h"
 #include "InputFile.h"
 using namespace std;
- void Upload::execute(){
+ void Upload::execute()   {
      this->dio.write("Please upload your local train CSV file");
      std::string string=this->dio.read();
      InputFile inputfile;
@@ -16,7 +16,7 @@ using namespace std;
          exit(0);
      }
      this->dio.write("Upload complete");
-     this->data->path=&string;
+     this->data->classifiedFile=&string;
 
      this->dio.write("Please upload your local test CSV file");
      std::string string2=this->dio.read();
@@ -25,7 +25,7 @@ using namespace std;
          exit(0);
      }
      this->dio.write("Upload complete");
-     this->data->pathsort=&string2;
+     this->data->unclassifiedFile=&string2;
 
 }
 
@@ -38,8 +38,8 @@ Upload::Upload(Data* data) {
 }
 void Upload::changepath(std::string path, std::string pathsort) {
 //    this->data.path= static_cast<std::string *>(malloc(sizeof(path)));
-    this->data->path=&path;
-    this->data->pathsort=&pathsort;
+//    this->data->path=&path;
+//    this->data->pathsort=&pathsort;
 
 
 }

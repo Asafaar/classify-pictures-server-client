@@ -12,7 +12,7 @@
 #include <list>
 #include "KnnClassification.h"
 
-void Command::execute() {
+void ClassifyData::execute() {
     if (data->classifiedFile->empty() || data->unclassifiedFile->empty()) {
         this->dio.write("Upload the data please");
         return;

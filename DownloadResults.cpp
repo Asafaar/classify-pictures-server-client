@@ -12,11 +12,11 @@ DownloadResults::DownloadResults(Data* data) {
 }
 
 void DownloadResults::execute() {
-    if (data->path->empty() or data->pathsort->empty()){
+    if (data->classifiedFile->empty() or data->unclassifiedFile->empty()){
         this->dio.write("data upload please.");
         exit(1);
     }
-    if (data.sortvectrs.empty){
+    if (data->classificationVector.empty()){
         this->dio.write("data the classify please.");
         exit(1);
     }
@@ -28,8 +28,11 @@ void DownloadResults::execute() {
     }
     std::ofstream file(csvPathToWrite);
     if (file.is_open()) {
-        for (int i = 0; i < sizeof(data.sortvecotr); ++i)
-            file << "enter the vlaue" << std::endl;
+        int size=sizeof(data->classificationVector);
+        for (int i = 0; i < size; ++i){
+            int j=i+1;
+            string string1=j+"  "+ *(data->classificationVector.at(i));
+            file << string1 << std::endl;}
     } else {
         this->dio.write("Failed to open file");
     }

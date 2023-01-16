@@ -8,7 +8,7 @@
 #include "Command.h"
 #include "Data.h"
 
-class Upload :public  Command {
+class Upload : public  Command {
 public:
      Upload(Data* data);
      void changepath(std::string path, std::string pathsort);

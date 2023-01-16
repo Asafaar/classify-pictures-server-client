@@ -7,7 +7,7 @@
 void AlgoSettings::stringToArray(std::string *arr[2], std::string s) {
     int i = 0;
     char curr = s.at(i);
-    while(curr != ' ') {
+    while(curr != ' ' && i < s.length()) {
         i++;
         curr = s.at(i);
     }
@@ -34,13 +34,14 @@ bool AlgoSettings::IsAPositiveNumber(string* s) {
 
 
 void AlgoSettings::execute(){
-    this->dio.write("The current KNN parameters are:" + *(this->data->Knum)+ "distance mertic =" +*(this->data->dis) );
+    this->dio.write("The current KNN parameters are:");
+    this->dio.write(this->data->Knum);
+    //this->dio.write("distance mertic =" + *(this->data->dis) );
     std::string stringInput=this->dio.read();
     if (stringInput.empty()){
         this->dio.write("The string is empty!");
         return;
-    }
-    else{
+    } else{
         InputFile inputFile;
         std::string *clientInput[2];
         stringToArray(clientInput, stringInput);
@@ -53,7 +54,7 @@ void AlgoSettings::execute(){
             this->dio.write("Invalid value for metric");
         }
         if (kIsOk && disIsOk) {
-            this->data->Knum = clientInput[0];
+            this->data->Knum = *clientInput[0];
             this->data->dis = clientInput[1];
         }
         return;

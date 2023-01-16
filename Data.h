@@ -7,13 +7,14 @@
 
 #include <vector>
 #include "string"
+
 class Data {
 public:
-    std::string* classifiedFile=new std::string;
-    std::string* unclassifiedFile=new std::string ;
-    std::string* Knum= (std::string *) "5";
-    std::string*  dis= (std::string *) "EUC";
-    std::vector<std::string*> classificationVector;
+    std::string *classifiedFile = new std::string;
+    std::string *unclassifiedFile = new std::string;
+    std::string Knum = "5";
+    std::string *dis = (std::string *) "EUC";
+    std::vector<std::string *> classificationVector;
 };
 
 

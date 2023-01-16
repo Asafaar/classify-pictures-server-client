@@ -49,7 +49,7 @@ void ClassifyData::execute() {
             vectorToClassify->push_back(singleUnclassifiedVector);
         }
         for (vector<long double> *vec: *vectorToClassify) {
-            this->data->classificationVector.push_back(knn(classifiedVector, *vec, *this->data->dis, stoi(*this->data->Knum)));
+            this->data->classificationVector.push_back(knn(classifiedVector, *vec, *this->data->dis, stoi(this->data->Knum)));
         }
 
     }

@@ -13,11 +13,11 @@ DisplayResults::DisplayResults(Data *data) {
 void DisplayResults::execute() {
     if (data->classifiedFile->empty() or data->unclassifiedFile->empty()){
         this->dio.write("data upload please.");
-        exit(1);
+        return;
     }
     if (data->classificationVector.empty()){
         this->dio.write("data the classify please.");
-        exit(1);
+        return;
     }
 
     int size=sizeof(data->classificationVector);

@@ -14,17 +14,17 @@ DownloadResults::DownloadResults(Data* data) {
 void DownloadResults::execute() {
     if (data->classifiedFile->empty() or data->unclassifiedFile->empty()){
         this->dio.write("data upload please.");
-        exit(1);
+        return;
     }
     if (data->classificationVector.empty()){
         this->dio.write("data the classify please.");
-        exit(1);
+        return;
     }
     std::string csvPathToWrite= this->dio.read();
     InputFile inputFile;
     if (!inputFile.CanreadFile(csvPathToWrite)){
         this->dio.write("Invalid path");
-        exit(1);
+        return;
     }
     std::ofstream file(csvPathToWrite);
     if (file.is_open()) {

@@ -13,7 +13,7 @@ using namespace std;
      InputFile inputfile;
      if (!inputfile.CanreadFile(string)){
          this->dio.write("input invalid");
-         exit(0);
+         return;
      }
      this->dio.write("Upload complete");
      this->data->classifiedFile=&string;
@@ -22,7 +22,7 @@ using namespace std;
      std::string string2=this->dio.read();
      if (!inputfile.CanreadFile(string2)){
          this->dio.write("input invalid");
-         exit(0);
+         return;
      }
      this->dio.write("Upload complete");
      this->data->unclassifiedFile=&string2;

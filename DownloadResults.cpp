@@ -12,7 +12,7 @@ DownloadResults::DownloadResults(Data* data) {
 }
 
 void DownloadResults::execute() {
-    if (data->classifiedFile->empty() or data->unclassifiedFile->empty()){
+    if (data->classifiedFile.empty() or data->unclassifiedFile.empty()){
         this->dio.write("data upload please.");
         return;
     }

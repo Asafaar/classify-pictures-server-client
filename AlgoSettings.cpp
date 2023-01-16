@@ -4,23 +4,25 @@
 #include "InputFile.h"
 #include "AlgoSettings.h"
 #include <string>
+
 void AlgoSettings::stringToArray(std::string *arr[2], std::string s) {
     int i = 0;
-    char curr = s.at(i);
-    while(curr != ' ' && i < s.length()) {
-        i++;
+    char curr = '0';
+    while (curr != ' ' && i < s.length()) {
         curr = s.at(i);
+        i++;
+
     }
-    auto *k = new string(s.substr(0, i-1));
-    auto *func = new string(s.substr(i+1));
+    auto *k = new string(s.substr(0, i - 1));
+    auto *func = new string(s.substr(i));
     arr[0] = k;
     arr[1] = func;
 }
 
-bool AlgoSettings::IsAPositiveNumber(string* s) {
+bool AlgoSettings::IsAPositiveNumber(string *s) {
     InputFile inputFile;
     int i = 0;
-    if(s->at(i) == '+') {
+    if (s->at(i) == '+') {
         i++;
     }
     for (; i < s->length(); i++) {
@@ -33,15 +35,13 @@ bool AlgoSettings::IsAPositiveNumber(string* s) {
 }
 
 
-void AlgoSettings::execute(){
-    this->dio.write("The current KNN parameters are:");
-    this->dio.write(this->data->Knum);
-    //this->dio.write("distance mertic =" + *(this->data->dis) );
-    std::string stringInput=this->dio.read();
-    if (stringInput.empty()){
+void AlgoSettings::execute() {
+    this->dio.write("The current KNN parameters are: k = " + this->data->Knum + ", distance mertic = " + this->data->dis);
+    std::string stringInput = this->dio.read();
+    if (stringInput.empty()) {
         this->dio.write("The string is empty!");
         return;
-    } else{
+    } else {
         InputFile inputFile;
         std::string *clientInput[2];
         stringToArray(clientInput, stringInput);
@@ -55,7 +55,7 @@ void AlgoSettings::execute(){
         }
         if (kIsOk && disIsOk) {
             this->data->Knum = *clientInput[0];
-            this->data->dis = clientInput[1];
+            this->data->dis = *clientInput[1];
         }
         return;
     }
@@ -63,6 +63,6 @@ void AlgoSettings::execute(){
 
 
 AlgoSettings::AlgoSettings(Data *data) {
-    this->description="algorithm settings";
-    this->data=data;
+    this->description = "algorithm settings";
+    this->data = data;
 }

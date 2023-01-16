@@ -16,7 +16,7 @@ using namespace std;
          return;
      }
      this->dio.write("Upload complete");
-     this->data->classifiedFile=&string;
+     this->data->classifiedFile=string;
 
      this->dio.write("Please upload your local test CSV file");
      std::string string2=this->dio.read();
@@ -25,7 +25,7 @@ using namespace std;
          return;
      }
      this->dio.write("Upload complete");
-     this->data->unclassifiedFile=&string2;
+     this->data->unclassifiedFile=string2;
 
 }
 

@@ -6,9 +6,9 @@
 #include "DefaultIO.h"
 using namespace std;
 std::string DefaultIO::read() {
-    std::string string;
-    std::cin >> string;
-    return string;
+    std::string str;
+    std::getline(std::cin, str);
+    return str;
 }
 
 void DefaultIO::write(std::string string) {

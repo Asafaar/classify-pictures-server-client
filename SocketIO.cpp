@@ -1,15 +1,12 @@
 //
 // Created by asaf9 on 1/9/2023.
 //
-#include <iostream>
 #include <cstdio>
-#include <unistd.h>
-#include <cstring>
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include "SocketIO.h"
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
 std::string SocketIO::read() {
     char clientInput[4096];
     int expected_data_len = sizeof(clientInput);
@@ -22,8 +19,10 @@ std::string SocketIO::read() {
     return clientInput;
 }
 
-void SocketIO::write(std::string string) {
-    send(client_sock, &string, string.length(), 0);
+void SocketIO::write(std::string str) {
+    char arr[str.length() + 1];
+    strcpy(arr, str.c_str());
+    send(client_sock, arr, str.length() + 1, 0);
 }
 
 SocketIO::SocketIO(int sockNum) {

@@ -32,75 +32,86 @@ int main(int argc, char *argv[]) {
 
     if (sock < 0) {
         perror("Error while creating socket!");
-        //}
+    }
 
-        //Create the socket struct
-        struct sockaddr_in sin;
-        memset(&sin, 0, sizeof(sin));
-        sin.sin_family = AF_INET;
-        sin.sin_addr.s_addr = INADDR_ANY;
-        sin.sin_port = htons(server_port);
+    //Create the socket struct
+    struct sockaddr_in sin;
+    memset(&sin, 0, sizeof(sin));
+    sin.sin_family = AF_INET;
+    sin.sin_addr.s_addr = INADDR_ANY;
+    sin.sin_port = htons(server_port);
 
 
-        if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-            perror("error binding socket");
+    if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+        perror("error binding socket");
+    }
+
+    while (true) {
+        if (listen(sock, 5) < 0) {
+            perror("Error while listening to a socket");
         }
-
+        // Allow new client connection
         struct sockaddr_in client_sin;
         unsigned int addr_len = sizeof(client_sin);
-
         int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
         if (client_sock < 0) {
             perror("Invalid client socket number!");
         }
-
-        Data data;
-        DefaultIO* socketIO = new SocketIO(client_sock);
-        CLI cli = CLI(&data, socketIO);
-        cli.start();
-        // Infinite loop
-        /*
+        char clientInput[4096];
+        int expected_data_len = sizeof(clientInput);
         while (true) {
-            if (listen(sock, 5) < 0) {
-                perror("Error while listening to a socket");
-            }
-            // Allow new client connection
-            struct sockaddr_in client_sin;
-            unsigned int addr_len = sizeof(client_sin);
-            int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
-            if (client_sock < 0) {
-                perror("Invalid client socket number!");
-            }
-            char clientInput[4096];
-            int expected_data_len = sizeof(clientInput);
-            while (true) {
-                memset(clientInput, '\0', 4096);
-                //Get info from client
-                int clientInputSize = recv(client_sock, clientInput, expected_data_len, 0);
-                if (clientInputSize <= 0) {
-                    if (clientInputSize < 0) {
-                        perror("Error - Negative input!");
-                        continue;
-                    }
-                }
-                //Client wishes to disconnect
-                if (strcmp(clientInput, "-1") == 0) {
-                    break;
-                }
-                //call function to check the input
-                //return to client
-                string *classification = inputFile.clientInputWork(clientInput, file, clientInputSize);
-                string strObj(*classification);
-                char *classificationToSend = &strObj[0];
-                int dataLen = classification->size();
-                //Send the classification to the client
-                send(client_sock, classificationToSend, dataLen, 0);
-            }
+            memset(clientInput, '\0', 4096);
+
+            Data data;
+            DefaultIO *socketIO = new SocketIO(client_sock);
+            CLI cli = CLI(&data, socketIO);
+            cli.start();
 
         }
-         */
-    } else cout << "invalid input\n";
-    return -1;
+
+    }
+    // Infinite loop
+    /*
+    while (true) {
+        if (listen(sock, 5) < 0) {
+            perror("Error while listening to a socket");
+        }
+        // Allow new client connection
+        struct sockaddr_in client_sin;
+        unsigned int addr_len = sizeof(client_sin);
+        int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+        if (client_sock < 0) {
+            perror("Invalid client socket number!");
+        }
+        char clientInput[4096];
+        int expected_data_len = sizeof(clientInput);
+        while (true) {
+            memset(clientInput, '\0', 4096);
+            //Get info from client
+            int clientInputSize = recv(client_sock, clientInput, expected_data_len, 0);
+            if (clientInputSize <= 0) {
+                if (clientInputSize < 0) {
+                    perror("Error - Negative input!");
+                    continue;
+                }
+            }
+            //Client wishes to disconnect
+            if (strcmp(clientInput, "-1") == 0) {
+                break;
+            }
+            //call function to check the input
+            //return to client
+            string *classification = inputFile.clientInputWork(clientInput, file, clientInputSize);
+            string strObj(*classification);
+            char *classificationToSend = &strObj[0];
+            int dataLen = classification->size();
+            //Send the classification to the client
+            send(client_sock, classificationToSend, dataLen, 0);
+        }
+
+    }
+     */
+
 }
 
 /**

@@ -39,7 +39,7 @@ void AlgoSettings::execute() {
     this->dio.write("The current KNN parameters are: k = " + this->data->Knum + ", distance mertic = " + this->data->dis);
     std::string stringInput = this->dio.read();
     if (stringInput.empty()) {
-        this->dio.write("The string is empty!");
+//        this->dio.write("The string is empty!");
         return;
     } else {
         InputFile inputFile;

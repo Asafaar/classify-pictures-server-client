@@ -12,9 +12,9 @@ class Data {
 public:
     std::string classifiedFile;
     std::string unclassifiedFile;
-    std::string Knum = "5";
-    std::string dis = "EUC";
-    std::vector<std::string *> classificationVector;
+    std::string Knum = "15";
+    std::string dis = "AUC";
+    std::vector<std::string *>* classificationVector=new std::vector<std::string * >;
 };
 
 

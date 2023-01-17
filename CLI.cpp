@@ -21,10 +21,13 @@ void CLI::start() {
         std::string string = command[0]->dio.read();
         int UserSelect = stoi(string);
         UserSelect -= 1;
-        if (UserSelect == 8) {
+        if (UserSelect == 7) {
             exit(1);
         }
-        command[UserSelect]->execute();
+        if (UserSelect>=0 and UserSelect<=6){
+        command[UserSelect]->execute();} else{
+            command[0]->dio.write("invalid input");
+        }
     }
 }
 

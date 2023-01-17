@@ -16,7 +16,7 @@ void DisplayResults::execute() {
         this->dio.write("Upload the data please.");
         return;
     }
-    if (data->classificationVector.empty()){
+    if (data->classificationVector->empty()){
         this->dio.write("Classify the data please.");
         return;
     }
@@ -24,7 +24,7 @@ void DisplayResults::execute() {
     int size=sizeof(data->classificationVector);
     for (int i = 0; i < size; i++){
         int j=i+1;
-        std::string string1=j + "  " + *(this->data->classificationVector.at(i));
+        std::string string1=j+"  "+ *(data->classificationVector->at(i));
         this->dio.write(string1);
     }
     this->dio.write("Done.");

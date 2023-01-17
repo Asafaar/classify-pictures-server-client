@@ -48,10 +48,16 @@ void ClassifyData::execute() {
             }
             vectorToClassify->push_back(singleUnclassifiedVector);
         }
-        for (vector<long double> *vec: *vectorToClassify) {
-            this->data->classificationVector.push_back(knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)));
-            cout << *knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)) << endl;
-            cout << vec << endl;
+//        for (vector<long double> *vec: *vectorToClassify) {
+//            this->data->classificationVector->push_back(knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)));
+////            cout << *knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)) << endl;
+////            cout << vec << endl;
+//        }
+        int d=sizeof(vectorToClassify);
+        for (int i = 0; i <d ; ++i) {
+            this->data->classificationVector->push_back(knn(classifiedVector, *vectorToClassify->at(i), this->data->dis, stoi(this->data->Knum)));
+
+
         }
 
     }

@@ -17,7 +17,7 @@ void DownloadResults::execute() {
         this->dio.write("data upload please.");
         return;
     }
-    if (data->classificationVector.empty()){
+    if (data->classificationVector->empty()){
         this->dio.write("data the classify please.");
         return;
     }
@@ -32,7 +32,7 @@ void DownloadResults::execute() {
         int size=sizeof(data->classificationVector);
         for (int i = 0; i < size; ++i){
             int j=i+1;
-            string string1=j+"  "+ *(data->classificationVector.at(i));
+            string string1=j+"  "+ *(data->classificationVector->at(i));
             file << string1 << std::endl;}
     } else {
         this->dio.write("Failed to open file");

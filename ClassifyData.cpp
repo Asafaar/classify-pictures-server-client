@@ -50,6 +50,8 @@ void ClassifyData::execute() {
         }
         for (vector<long double> *vec: *vectorToClassify) {
             this->data->classificationVector.push_back(knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)));
+            cout << *knn(classifiedVector, *vec, this->data->dis, stoi(this->data->Knum)) << endl;
+            cout << vec << endl;
         }
 
     }

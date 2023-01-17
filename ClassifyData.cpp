@@ -14,7 +14,7 @@
 
 void ClassifyData::execute() {
     if (data->classifiedFile.empty() || data->unclassifiedFile.empty()) {
-        this->dio.write("Upload the data please");
+        this->dio->write("Upload the data please");
         return;
     } else {
         InputFile inputFile;
@@ -64,7 +64,7 @@ void ClassifyData::execute() {
 }
 
 
-ClassifyData::ClassifyData(Data *data,DefaultIO defaultIo1) {
+ClassifyData::ClassifyData(Data *data,DefaultIO *defaultIo1) {
     this->description = "classify data";
     this->data = data;
     this->dio=defaultIo1;

@@ -21,15 +21,20 @@ int main(int argc, char *argv[]) {
     sin.sin_port = htons(port_no);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
     while (true) {
-
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
-        int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        cout << buffer << endl;
-        if (read_bytes == 0) {
-            perror("connection is closed");
-        } else if (read_bytes < 0) {
-            perror("Error while reading input!");
+        while (true) {
+            //memset(buffer, 0, 4096);
+            int read_bytes = recv(sock, buffer, expected_data_len, 0);
+            //if (strcmp(buffer, "done") == 0) { break; }
+            //cout << buffer << endl;
+            //cout << read_bytes << endl;
+            for (int i = 0; i < strlen(buffer); i++) {
+                cout << buffer[i];
+            }
+            //if (read_bytes == 0) {
+              //  perror("connection is closed");
+            //} else if (read_bytes < 0) { perror("Error while reading input!"); }
         }
 
         string inputLine;

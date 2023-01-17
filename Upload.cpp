@@ -8,8 +8,8 @@
 #include "InputFile.h"
 using namespace std;
  void Upload::execute()   {
-     this->dio.write("Please upload your local train CSV file");
-     std::string string=this->dio.read();
+     this->dio->write("Please upload your local train CSV file");
+     std::string string=this->dio->read();
      InputFile inputfile;
      /*
 //     if (!inputfile.CanreadFile(string)){
@@ -17,11 +17,11 @@ using namespace std;
 //         return;
 //     }
       */
-     this->dio.write("Upload complete");
+     this->dio->write("Upload complete");
      this->data->classifiedFile=string;
 
-     this->dio.write("Please upload your local test CSV file");
-     std::string string2=this->dio.read();
+     this->dio->write("Please upload your local test CSV file");
+     std::string string2=this->dio->read();
      /*
 //     if (!inputfile.CanreadFile(string2)){
 //         this->dio.write("input invalid");
@@ -30,14 +30,14 @@ using namespace std;
 
      ../files/iris_classified.csv
       */
-     this->dio.write("Upload complete");
+     this->dio->write("Upload complete");
      this->data->unclassifiedFile=string2;
 
 }
 
 
 
-Upload::Upload(Data* data,DefaultIO defaultIo1) {
+Upload::Upload(Data* data,DefaultIO *defaultIo1) {
     this->description="upload an unclassified csv data file";
     this->data=data;
     this->dio=defaultIo1;

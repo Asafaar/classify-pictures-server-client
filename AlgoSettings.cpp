@@ -36,8 +36,8 @@ bool AlgoSettings::IsAPositiveNumber(string *s) {
 
 
 void AlgoSettings::execute() {
-    this->dio.write("The current KNN parameters are: k = " + this->data->Knum + ", distance mertic = " + this->data->dis);
-    std::string stringInput = this->dio.read();
+    this->dio->write("The current KNN parameters are: k = " + this->data->Knum + ", distance mertic = " + this->data->dis);
+    std::string stringInput = this->dio->read();
     if (stringInput.empty()) {
 //        this->dio.write("The string is empty!");
         return;
@@ -48,10 +48,10 @@ void AlgoSettings::execute() {
         bool kIsOk = IsAPositiveNumber(clientInput[0]);
         bool disIsOk = inputFile.distanceIsValid(*clientInput[1]);
         if (!kIsOk) {
-            this->dio.write("Invalid value for K");
+            this->dio->write("Invalid value for K");
         }
         if (!disIsOk) {
-            this->dio.write("Invalid value for metric");
+            this->dio->write("Invalid value for metric");
         }
         if (kIsOk && disIsOk) {
             this->data->Knum = *clientInput[0];
@@ -62,7 +62,7 @@ void AlgoSettings::execute() {
 }
 
 
-AlgoSettings::AlgoSettings(Data *data,DefaultIO defaultIo1) {
+AlgoSettings::AlgoSettings(Data *data,DefaultIO *defaultIo1) {
     this->description = "algorithm settings";
     this->data = data;
     this->dio=defaultIo1;

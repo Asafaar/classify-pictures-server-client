@@ -8,7 +8,7 @@
 #include "Command.h"
 class DownloadResults: public Command {
 public:
-    DownloadResults(Data* data,DefaultIO defaultIo1);
+    DownloadResults(Data* data,DefaultIO *defaultIo1);
     void execute() override;
 
 };

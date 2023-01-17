@@ -11,7 +11,7 @@
 class Command  {
 public:
         std::string  description;
-        DefaultIO dio;
+        DefaultIO *dio;
         Data* data;
 
     virtual void execute() ;

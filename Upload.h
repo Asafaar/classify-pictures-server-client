@@ -10,7 +10,7 @@
 
 class Upload : public  Command {
 public:
-     Upload(Data* data,DefaultIO defaultIo1);
+     Upload(Data* data,DefaultIO *defaultIo1);
      void changepath(std::string path, std::string pathsort);
     void execute() override;
 

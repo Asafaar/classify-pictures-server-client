@@ -7,6 +7,7 @@
 
 #include "DefaultIO.h"
 class StandareIO:public DefaultIO {
+public:
 
 };
 

@@ -9,8 +9,9 @@
 
 class DefaultIO {
 public:
-      virtual std::string read();
-      virtual void write(std::string string);
+    virtual std::string read();
+
+    virtual void write(std::string string);
 };
 
 

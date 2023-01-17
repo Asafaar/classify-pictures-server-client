@@ -6,14 +6,10 @@
 #include <netinet/in.h>
 #include "Server.h"
 #include "InputFile.h"
-#include "Upload.h"
 #include "Command.h"
-#include "DownloadResults.h"
-#include "ClassifyData.h"
-#include <iostream>
-#include "DisplayResults.h"
-#include "AlgoSettings.h"
 #include "CLI.h"
+#include "SocketIO.h"
+#include "DefaultIO.h"
 
 using namespace std;
 
@@ -59,8 +55,8 @@ int main(int argc, char *argv[]) {
         }
 
         Data data;
-        DefaultIO defaultIo;
-        CLI cli = CLI(&data, &defaultIo);
+        DefaultIO* socketIO = new SocketIO(client_sock);
+        CLI cli = CLI(&data, socketIO);
         cli.start();
         // Infinite loop
         /*

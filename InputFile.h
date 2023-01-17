@@ -28,7 +28,7 @@ public:
          string* clientInputWork(char clientInput[], string filename, int clientInputSize);
          vector<long double> fromStringVectorToLongDouble(vector<string> stringvactor);
          string * InvalidInputString();
-         bool CanreadFile(const string &path);
+         bool CanReadFile(const string &path);
          bool IfKnumAndDistaneGood (const string &path,Data data);
          bool IfCsvPathToMakeValid(const string &path);
 };

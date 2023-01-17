@@ -11,7 +11,7 @@
 #include "CLI.h"
 using std::cout;
 
-int main() {
+void run() {
     Data data;
     StandareIO standareIo;
     CLI cli=CLI(&data,&standareIo);

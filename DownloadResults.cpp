@@ -23,7 +23,7 @@ void DownloadResults::execute() {
     }
     std::string csvPathToWrite= this->dio.read();
     InputFile inputFile;
-    if (!inputFile.CanreadFile(csvPathToWrite)){
+    if (!inputFile.CanReadFile(csvPathToWrite)){
         this->dio.write("Invalid path");
         return;
     }

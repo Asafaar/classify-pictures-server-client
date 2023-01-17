@@ -8,6 +8,7 @@
 #include "KnnClassification.h"
 #include "ass1/Geometry.h"
 #include <regex>
+
 using namespace std;
 using std::cout;
 using std::cerr;
@@ -35,18 +36,18 @@ string InputFile::readFile(const string &path) {
     }
     return data;
 }
+/*
+bool InputFile::IfKnumAndDistaneGood(const string &path, Data data) {
 
-bool InputFile::IfKnumAndDistaneGood (const string &path,Data data){
+}*/
 
-}
-
-bool InputFile::CanreadFile(const string &path) {
+bool InputFile::CanReadFile(const string &path) {
     fstream myFile;
-    myFile.open(path,ios::out);
+    myFile.open(path, ios::out);
     if (myFile.is_open()) {
         myFile.close();
         return true;
-    } else  return false;
+    } else { return false; }
 }
 
 /**kNumIsValid
@@ -178,33 +179,35 @@ bool InputFile::kCheckIfBiggerFromLengthOfData(int Length, int knNum) {
  * @param-*knNumm-pointer to where knum will save after the checks
  * @param-*distance-pointer to where distancee will save after the checks
  */
-bool InputFile::dataMainInputFromFile(std::vector<VectorData *> *data, int argc, string *argv[], int *knNumm,string *distancee) {
+bool InputFile::dataMainInputFromFile(std::vector<VectorData *> *data, int argc, string *argv[], int *knNumm,
+                                      string *distancee) {
     try {
-    if (argc == 4) {
-        int knNum = stoi(*argv[0]);
-        string nameFile = *argv[1];
-        string distance = *argv[2];
-        bool kCheck = kNumIsValid(knNum);
-        bool nameFileCheck = nameFileIsValid(nameFile);
-        bool distanceCheck = distanceIsValid(distance);
-        if (kCheck and nameFileCheck and distanceCheck) {
-            string namePath = "files/" + nameFile;
-            // for debug in clion need ..//files//
-            LoadData(namePath, data);
-            *knNumm = knNum;
-            *distancee = distance;
-            return true;
+        if (argc == 4) {
+            int knNum = stoi(*argv[0]);
+            string nameFile = *argv[1];
+            string distance = *argv[2];
+            bool kCheck = kNumIsValid(knNum);
+            bool nameFileCheck = nameFileIsValid(nameFile);
+            bool distanceCheck = distanceIsValid(distance);
+            if (kCheck and nameFileCheck and distanceCheck) {
+                string namePath = "files/" + nameFile;
+                // for debug in clion need ..//files//
+                LoadData(namePath, data);
+                *knNumm = knNum;
+                *distancee = distance;
+                return true;
+            } else {
+                cout << "Invalid input" << endl;
+                return false;
+            }
+
+
         } else {
             cout << "Invalid input" << endl;
             return false;
         }
-
-
-    } else {
-        cout << "Invalid input" << endl;
-        return false;
-    }}
-    catch(exception &err){
+    }
+    catch (exception &err) {
         cout << "Invalid input" << endl;
         return false;
     }
@@ -228,6 +231,7 @@ void InputFile::LoadWithoutUserInput(std::vector<VectorData *> *data, int *knNum
     *distance = "MAN";
 
 }
+
 /**
  * fromStringVectorToLongDouble-take the vectors from string format fo long double format
  * @param stringVector the input vector
@@ -235,7 +239,7 @@ void InputFile::LoadWithoutUserInput(std::vector<VectorData *> *data, int *knNum
  */
 vector<long double> InputFile::fromStringVectorToLongDouble(vector<string> stringVector) {
     vector<long double> vector;
-    if (stringVector[0]==" "){
+    if (stringVector[0] == " ") {
         return vector = {0};
     }
     int size = stringVector.size();
@@ -251,22 +255,20 @@ vector<long double> InputFile::fromStringVectorToLongDouble(vector<string> strin
 }
 
 
-
-
 string *InputFile::clientInputWork(char clientInput[], string fileName, int clientInputSize) {
     //add the suffixes of the file in server run
     fileName = fileName + ".csv";
-   //the min  chars  needed for the program---1
+    //the min  chars  needed for the program---1
     if (clientInputSize > 6) {
-    //vectorInput save the input
+        //vectorInput save the input
         vector<string> vectorInput;
         string stringTemp;
-        bool startOfTheString= true;
+        bool startOfTheString = true;
         for (int i = 0; i <= clientInputSize; ++i) {
             // if the char not space or null\0
             if (clientInput[i] != 32 and clientInput[i] != 0) {
                 stringTemp += clientInput[i];
-                startOfTheString= false;
+                startOfTheString = false;
             }
             // when see space or 0 add the string to the vactor
             if (clientInput[i] == 32 or clientInput[i] == 0 and !startOfTheString) {
@@ -280,12 +282,12 @@ string *InputFile::clientInputWork(char clientInput[], string fileName, int clie
         if (size >= 3) {
             string *dataToInputFile[3];
             // to fix the problem in Mobax I need make temp var from k-num and distance
-            auto* knumSave=new string;
-            auto* distanceSave= new string;
-            *knumSave=vectorInput[size - 1];
-            *distanceSave=vectorInput[size - 2];
-            string a=vectorInput[size - 1];
-            string b=vectorInput[size - 2];
+            auto *knumSave = new string;
+            auto *distanceSave = new string;
+            *knumSave = vectorInput[size - 1];
+            *distanceSave = vectorInput[size - 2];
+            string a = vectorInput[size - 1];
+            string b = vectorInput[size - 2];
             dataToInputFile[0] = &a;//k-num
             dataToInputFile[1] = &fileName;
             dataToInputFile[2] = &b;//distance
@@ -299,7 +301,7 @@ string *InputFile::clientInputWork(char clientInput[], string fileName, int clie
             int *knNum = new int;
             auto *distance = new string;
             Geometry geometry;
-            string* result;
+            string *result;
             InputFile inputFile;
             //if return true then the data is good
             bool invalid = inputFile.dataMainInputFromFile(&data, 4, dataToInputFile, knNum, distance);
@@ -310,7 +312,7 @@ string *InputFile::clientInputWork(char clientInput[], string fileName, int clie
                 result = knn(&data, vectorLong, *distance, *knNum);
                 return result;
             } else {
-             //if 3 isn't true
+                //if 3 isn't true
                 return InvalidInputString();
             }
 
@@ -327,12 +329,11 @@ string *InputFile::clientInputWork(char clientInput[], string fileName, int clie
 }
 
 
-
 /**
  * InvalidInputString
  * @return when invalid input return string
  */
-string *InputFile::InvalidInputString(){
+string *InputFile::InvalidInputString() {
     auto *stringTemp = new string;
     *stringTemp = "invalid input";
     return stringTemp;
@@ -340,7 +341,7 @@ string *InputFile::InvalidInputString(){
 
 bool InputFile::IfCsvPathToMakeValid(const string &path) {
     std::ofstream file(path);
-    if (file.good() && path.size() > 4 && path.substr(path.size()-4) == ".csv") {
+    if (file.good() && path.size() > 4 && path.substr(path.size() - 4) == ".csv") {
         file.close();
         return true;
     } else {

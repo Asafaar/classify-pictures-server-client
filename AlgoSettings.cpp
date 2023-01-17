@@ -62,7 +62,8 @@ void AlgoSettings::execute() {
 }
 
 
-AlgoSettings::AlgoSettings(Data *data) {
+AlgoSettings::AlgoSettings(Data *data,DefaultIO defaultIo1) {
     this->description = "algorithm settings";
     this->data = data;
+    this->dio=defaultIo1;
 }

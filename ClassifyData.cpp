@@ -58,7 +58,8 @@ void ClassifyData::execute() {
 }
 
 
-ClassifyData::ClassifyData(Data *data) {
+ClassifyData::ClassifyData(Data *data,DefaultIO defaultIo1) {
     this->description = "classify data";
     this->data = data;
+    this->dio=defaultIo1;
 }

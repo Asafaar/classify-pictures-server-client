@@ -12,10 +12,10 @@ using namespace std;
      std::string string=this->dio.read();
      InputFile inputfile;
      /*
-     if (!inputfile.CanreadFile(string)){
-         this->dio.write("input invalid");
-         return;
-     }
+//     if (!inputfile.CanreadFile(string)){
+//         this->dio.write("input invalid");
+//         return;
+//     }
       */
      this->dio.write("Upload complete");
      this->data->classifiedFile=string;
@@ -23,10 +23,12 @@ using namespace std;
      this->dio.write("Please upload your local test CSV file");
      std::string string2=this->dio.read();
      /*
-     if (!inputfile.CanreadFile(string2)){
-         this->dio.write("input invalid");
-         return;
-     }
+//     if (!inputfile.CanreadFile(string2)){
+//         this->dio.write("input invalid");
+//         return;
+//     }
+
+     ../files/iris_classified.csv
       */
      this->dio.write("Upload complete");
      this->data->unclassifiedFile=string2;
@@ -35,9 +37,10 @@ using namespace std;
 
 
 
-Upload::Upload(Data* data) {
+Upload::Upload(Data* data,DefaultIO defaultIo1) {
     this->description="upload an unclassified csv data file";
     this->data=data;
+    this->dio=defaultIo1;
 
 }
 void Upload::changepath(std::string path, std::string pathsort) {

@@ -24,7 +24,7 @@ using std::istringstream;
  *  @return-the string after check
  */
 string InputFile::readFile(const string &path) {
-    ifstream myFile(path);
+    fstream myFile(path);
     string line;
     string data;
     if (myFile.is_open()) {
@@ -46,7 +46,7 @@ bool InputFile::CanreadFile(const string &path) {
     if (myFile.is_open()) {
         myFile.close();
         return true;
-    } else return false;
+    } else  return false;
 }
 
 /**kNumIsValid

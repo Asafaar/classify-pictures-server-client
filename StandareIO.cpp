@@ -3,7 +3,6 @@
 //
 #include <iostream>
 #include "StandareIO.h"
-#include "DefaultIO.h"
 using namespace std;
 std::string DefaultIO::read() {
     std::string str;

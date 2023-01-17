@@ -4,9 +4,10 @@
 
 #include "DisplayResults.h"
 
-DisplayResults::DisplayResults(Data *data) {
+DisplayResults::DisplayResults(Data *data,DefaultIO defaultIo1) {
     this->description="display results";
     this->data=data;
+    this->dio=defaultIo1;
 
 }
 

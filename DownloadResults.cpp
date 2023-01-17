@@ -5,9 +5,10 @@
 #include <fstream>
 #include "DownloadResults.h"
 #include "InputFile.h"
-DownloadResults::DownloadResults(Data* data) {
+DownloadResults::DownloadResults(Data* data,DefaultIO defaultIo1) {
     this->description="download results";
     this->data=data;
+    this->dio=defaultIo1;
 
 }
 

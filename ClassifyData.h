@@ -10,7 +10,7 @@
 
 class ClassifyData:public Command {
 public:
-    ClassifyData(Data* data);
+    ClassifyData(Data* data,DefaultIO defaultIo1);
     void execute() override;
 
 };

@@ -23,20 +23,14 @@ int main(int argc, char *argv[]) {
     while (true) {
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
-        while (true) {
-            //memset(buffer, 0, 4096);
-            int read_bytes = recv(sock, buffer, expected_data_len, 0);
-            //if (strcmp(buffer, "done") == 0) { break; }
-            //cout << buffer << endl;
-            //cout << read_bytes << endl;
-            for (int i = 0; i < strlen(buffer); i++) {
-                cout << buffer[i];
-            }
-            //if (read_bytes == 0) {
-              //  perror("connection is closed");
-            //} else if (read_bytes < 0) { perror("Error while reading input!"); }
-        }
+        //memset(buffer, 0, 4096);
+        int read_bytes = recv(sock, buffer, expected_data_len, 0);
+        //if (strcmp(buffer, "done") == 0) { break; }
+        cout << buffer << endl;
 
+        if (read_bytes == 0) {
+            perror("connection is closed");
+        } else if (read_bytes < 0) { perror("Error while reading input!"); }
         string inputLine;
         getline(cin, inputLine);
         char *data_addr;

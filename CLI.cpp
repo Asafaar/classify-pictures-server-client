@@ -11,14 +11,13 @@
 
 void CLI::start() {
     while (true) {
+        std::string s = "";
         for (int i = 0; i < 5; ++i) {
             int j = i + 1;
-            std::string s = std::to_string(j);
-            std::string string = s + ". " + command[i]->description;
-            command[0]->dio->write(string);
+           s += std::to_string(j) + ". " + command[i]->description + "\n";
         }
-        command[0]->dio->write("8. exit");
-        command[0]->dio->write("done");
+        s += "8. exit";
+        command[0]->dio->write(s);
         std::string string = command[0]->dio->read();
         int UserSelect = stoi(string);
         UserSelect -= 1;

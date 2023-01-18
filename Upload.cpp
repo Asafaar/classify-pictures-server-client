@@ -17,10 +17,9 @@ using namespace std;
 //         return;
 //     }
       */
-     this->dio->write("Upload complete");
+     this->dio->write("Upload complete\nPlease upload your local test CSV file");
      this->data->classifiedFile=string;
 
-     this->dio->write("Please upload your local test CSV file");
      std::string string2=this->dio->read();
      /*
 //     if (!inputfile.CanreadFile(string2)){

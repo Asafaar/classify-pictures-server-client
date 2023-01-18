@@ -50,7 +50,7 @@ void DownloadResults::execute() {
     std::istringstream buffer(string1);
     string temp;
     while (std::getline(buffer, temp,'\n')){
-        this->dio->write(string1);
+        this->dio->write(temp);
         this->dio->read();
     }
     this->dio->write("done");

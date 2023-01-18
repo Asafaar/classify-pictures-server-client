@@ -95,6 +95,9 @@ int main(int argc, char *argv[]) {
             continue;
         }
         if (downloadBool) {
+            recv(sock, buffer, expected_data_len, 0);
+            send(sock, "ack", 4, 0);
+
             string namefile = buffer;
             std::ofstream myfile;
             myfile.open(namefile);
@@ -112,7 +115,7 @@ int main(int argc, char *argv[]) {
                     if (sent_bytes < 0) {
                         perror("An error has occured");
                     }
-                    myfile << buffer << endl;
+                    myfile << buffer << "\n";
                     continue;
                 }
                 break;

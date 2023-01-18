@@ -53,5 +53,6 @@ void DownloadResults::execute() {
         this->dio->write(string1);
         this->dio->read();
     }
+    this->dio->write("done");
 
 }

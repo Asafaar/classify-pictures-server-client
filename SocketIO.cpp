@@ -5,18 +5,20 @@
 #include <sys/socket.h>
 #include "SocketIO.h"
 #include <bits/stdc++.h>
+#include <string.h>
+
 using namespace std;
 
 std::string SocketIO::read() {
     char clientInput[4096];
     int expected_data_len = sizeof(clientInput);
     int clientInputSize = recv(client_sock, clientInput, expected_data_len, 0);
-    if (clientInputSize <= 0) {
-        if (clientInputSize < 0) {
-            perror("Error - Negative input!");
-        }
+
+    if (clientInputSize < 0) {
+        perror("Error - Negative input!");
     }
-    return clientInput;
+    string str = clientInput;
+    return str;//.substr(0, clientInputSize - 1);
 }
 
 void SocketIO::write(std::string str) {
@@ -24,9 +26,11 @@ void SocketIO::write(std::string str) {
     strcpy(arr, str.c_str());
     send(client_sock, arr, str.length() + 1, 0);
 }
-SocketIO::SocketIO(){
-    this->client_sock=0;
+
+SocketIO::SocketIO() {
+    this->client_sock = 0;
 }
+
 SocketIO::SocketIO(int sockNum) {
     this->client_sock = sockNum;
 }

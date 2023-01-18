@@ -21,12 +21,13 @@ class path;
 
 std::string convert_to_wsl_path(std::string windows_path) {
     std::string wsl_path = windows_path;
-    string  str=wsl_path.substr(0, 1);
+    string str = wsl_path.substr(0, 1);
     std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-    string string2="/mnt/"+ str;
+    string string2 = "/mnt/" + str;
     wsl_path.replace(0, 2, string2);
     return wsl_path;
 }
+
 //C:/Users/asaf9/OneDrive - Bar-Ilan University/Desktop/iris_classified.csv
 std::string readFile2(string path) {
     string file_contents;
@@ -40,20 +41,22 @@ std::string readFile2(string path) {
 //C:/Users/asaf9/CLionProjects/ass4/files/iris_classified.csv
 ///mnt/c/Users/asaf9/CLionProjects/untitled95/files/beans_Classified.csv
 using namespace std;
-string UserSendFiles(string inputLine){
+
+string UserSendFiles(string inputLine) {
     InputFile inputFile;
 //    inputLine= convert_to_wsl_path(inputLine);
 //    if (!inputFile.CanReadFile(inputLine)){
 //        return "input invalid";
 //    } else{
-    string string1= readFile2(inputLine);
+    string string1 = readFile2(inputLine);
 //    cout << string1 <<endl;
     return string1;
-
 }
+
 //C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
-bool UserLoadCoomand(string buffer){
-    if (buffer=="Please upload your local train CSV file" or buffer=="Upload complete\nPlease upload your local test CSV file"){
+bool UserLoadCoomand(string buffer) {
+    if (buffer == "Please upload your local train CSV file" or
+        buffer == "Upload complete\nPlease upload your local test CSV file") {
         return true;
     } else return false;
 }
@@ -70,6 +73,7 @@ int main(int argc, char *argv[]) {
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(port_no);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
+    bool loadBool = false;
     while (true) {
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
@@ -80,11 +84,10 @@ int main(int argc, char *argv[]) {
             perror("connection is closed");
         } else if (read_bytes < 0) { perror("Error while reading input!"); }
 
-        bool loadBool;
         if (strcmp(buffer, "done") != 0) {
             cout << buffer << endl;
-            loadBool=UserLoadCoomand(buffer);
-            int sent_bytes = send(sock, "ack", 3, 0);
+            loadBool = UserLoadCoomand(buffer);
+            int sent_bytes = send(sock, "ack", 4, 0);
             if (sent_bytes < 0) {
                 perror("An error has occured");
             }
@@ -92,9 +95,34 @@ int main(int argc, char *argv[]) {
         }
         string inputLine;
         getline(cin, inputLine);
-//        cin >> inputLine;
-        if (loadBool){
-            inputLine=UserSendFiles(inputLine);
+        if (loadBool) {
+            fstream file;
+            //inputLine=UserSendFiles(inputLine);
+            file.open(inputLine, ios::in);
+            if (file.is_open()) {
+                string line;
+                while (getline(file, line)) {
+                    char *data_addr;
+                    string str_obj(line);
+                    data_addr = &str_obj[0];
+                    int dataLen = line.size();
+                    int sent_bytes = send(sock, data_addr, dataLen, 0);
+                    if (sent_bytes < 0) {
+                        perror("An error has occurred");
+                    }
+                    recv(sock, buffer, expected_data_len, 0);
+                    //../files/iris_Classified.csv
+                    // ../files/iris_Unclassified.csv
+                }
+                file.close();
+                loadBool = false;
+                char* data_addr;
+                string str_obj("done");
+                data_addr = &str_obj[0];
+                send(sock, data_addr, 5, 0);
+                recv(sock, buffer, expected_data_len, 0);
+                continue;
+            }
         }
         char *data_addr;
         string str_obj(inputLine);
@@ -102,7 +130,7 @@ int main(int argc, char *argv[]) {
         int dataLen = inputLine.size();
         int sent_bytes = send(sock, data_addr, dataLen, 0);
         if (sent_bytes < 0) {
-            perror("An error has occured");
+            perror("An error has occurred");
         }
     }
     close(sock);

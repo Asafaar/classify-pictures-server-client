@@ -1,9 +1,9 @@
 //
 // Created by asaf9 on 1/9/2023.
 //
-#include <string>
+#include <string.h>
 #include <utility>
-
+#include <iostream>
 #include "Upload.h"
 #include "InputFile.h"
 
@@ -13,18 +13,27 @@ void Upload::execute() {
     this->dio->write("Please upload your local train CSV file");
     this->dio->read();
     this->dio->write("done");
-    std::string string = this->dio->read();
-    InputFile inputfile;
+
+    string temp, newLine = "";
+    while (newLine != "done") {
+        newLine = this->dio->read();
+        temp += newLine;
+        this->dio->write("got");
+    }
+    this->data->classifiedFile = temp;
+
     this->dio->write("Upload complete\nPlease upload your local test CSV file");
     this->dio->read();
     this->dio->write("done");
-    this->data->classifiedFile = string;
-    std::string string2 = this->dio->read();
+    temp = "", newLine = "";
+    while (newLine != "done") {
+        newLine = this->dio->read();
+        temp += newLine;
+        this->dio->write("got");
+    }
+    this->data->unclassifiedFile = temp;
     this->dio->write("Upload complete");
     this->dio->read();
-    this->dio->write("done");
-    this->data->unclassifiedFile = string2;
-
 }
 
 

@@ -31,6 +31,7 @@ public:
          bool CanReadFile(const string &path);
          bool IfKnumAndDistaneGood (const string &path,Data data);
          bool IfCsvPathToMakeValid(const string &path);
+         void LoadDataFromString(const string StringFile, std::vector<VectorData *> *data);
 };
 
 #endif //ASS2_KNN_INPUTFILE_H

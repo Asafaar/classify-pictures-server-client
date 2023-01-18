@@ -4,6 +4,7 @@
 #include <cstring>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <thread>
 #include "Server.h"
 #include "InputFile.h"
 #include "Command.h"
@@ -12,6 +13,16 @@
 #include "DefaultIO.h"
 #include "DisplayResults.h"
 const string tempPort = "12346";
+void handle_client(int client_socket){
+    char clientInput[4096];
+    int expected_data_len = sizeof(clientInput);
+        memset(clientInput, '\0', 4096);
+        Data data;
+        SocketIO socketIO(client_socket);
+        CLI cli = CLI(&data, &socketIO);
+        cli.start();
+    close(client_socket);
+    }
 
 using namespace std;
 /**
@@ -57,16 +68,8 @@ int main(int argc, char *argv[]) {
         if (client_sock < 0) {
             perror("Invalid client socket number!");
         }
-        char clientInput[4096];
-        int expected_data_len = sizeof(clientInput);
-        while (true) {
-            memset(clientInput, '\0', 4096);
-            Data data;
-            SocketIO socketIO(client_sock);
-            CLI cli = CLI(&data, &socketIO);
-            cli.start();
-
-        }
+        std::thread t(handle_client, client_sock);
+        t.detach();
 
     }
     // Infinite loop

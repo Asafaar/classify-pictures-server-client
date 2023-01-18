@@ -84,13 +84,27 @@ int main(int argc, char *argv[]) {
             perror("connection is closed");
         } else if (read_bytes < 0) { perror("Error while reading input!"); }
 
-        if (strcmp(buffer, "done") != 0) {
+        if (strcmp(buffer, "done") != 0 and strcmp(buffer, "get data")!= 0) {
             cout << buffer << endl;
             loadBool = UserLoadCoomand(buffer);
             int sent_bytes = send(sock, "ack", 4, 0);
             if (sent_bytes < 0) {
                 perror("An error has occured");
             }
+            continue;
+        }
+        if (strcmp(buffer, "get data")==0){
+            recv(sock, buffer, expected_data_len, 0);
+            string namefile=buffer;
+            std::ofstream myfile;
+            myfile.open (namefile);
+            string line;
+            while(strlen(buffer)!=0){
+                recv(sock, buffer, expected_data_len, 0);
+                myfile << buffer<<endl;
+
+            }
+            myfile.close();
             continue;
         }
         string inputLine;
@@ -125,6 +139,9 @@ int main(int argc, char *argv[]) {
             }
         }
         char *data_addr;
+        if (inputLine.empty()){
+            inputLine="empty";
+        }
         string str_obj(inputLine);
         data_addr = &str_obj[0];
         int dataLen = inputLine.size();

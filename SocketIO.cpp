@@ -10,7 +10,7 @@
 using namespace std;
 
 std::string SocketIO::read() {
-    char clientInput[4096];
+    char clientInput[4096]={0};
     int expected_data_len = sizeof(clientInput);
     int clientInputSize = recv(client_sock, clientInput, expected_data_len, 0);
 

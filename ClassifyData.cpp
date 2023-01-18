@@ -16,6 +16,7 @@ void ClassifyData::execute() {
     if (data->classifiedFile.empty() || data->unclassifiedFile.empty()) {
         this->dio->write("Upload the data please");
         this->dio->read();
+        this->dio->write("done");
         return;
     } else {
         InputFile inputFile;
@@ -29,7 +30,7 @@ void ClassifyData::execute() {
         std::istringstream buffer(this->data->unclassifiedFile);
         std::string token;
         // split the csv file by \n
-        while (std::getline(buffer, token, '\n')) {
+        while (std::getline(buffer, token, '\r')) {
             string temp;
             std::stringstream ss(token);
             auto *singleUnclassifiedVector = new std::vector<long double>;

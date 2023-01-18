@@ -24,13 +24,13 @@ void DisplayResults::execute() {
     }
 
     int size=sizeof(data->classificationVector);
+    std::string string1;
     for (int i = 0; i < size; i++){
         int j=i+1;
-        std::string string1=j+"  "+ *(data->classificationVector->at(i));
-        this->dio->write(string1);
-        this->dio->read();
-    }
-    this->dio->write("Done.");
-    this->dio->read();
+        string1+=std::to_string(j)+"  "+ *(data->classificationVector->at(i))+"\n";
 
+    }
+    this->dio->write(string1);
+    this->dio->read();
+    this->dio->write("done");
 }

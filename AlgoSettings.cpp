@@ -40,7 +40,7 @@ void AlgoSettings::execute() {
     this->dio->read();
     this->dio->write("done");
     std::string stringInput = this->dio->read();
-    if (stringInput.empty()) {
+    if (stringInput=="empty") {
 //        this->dio.write("The string is empty!");
         return;
     } else {
@@ -52,18 +52,18 @@ void AlgoSettings::execute() {
         if (!kIsOk) {
             this->dio->write("Invalid value for K");
             this->dio->read();
-        } else {
-            this->data->Knum = *clientInput[0];
         }
         if (!disIsOk) {
             this->dio->write("Invalid value for metric");
-            this->dio->read();
-        } else {
+            this->dio->read();}
+
+        if (disIsOk and kIsOk){
+            this->data->Knum = *clientInput[0];
             this->data->dis = *clientInput[1];
         }
         return;
-    }
-}
+
+}}
 
 
 AlgoSettings::AlgoSettings(Data *data,DefaultIO *defaultIo1) {

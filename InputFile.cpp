@@ -158,13 +158,13 @@ void InputFile::LoadData(const string &filePath, std::vector<VectorData *> *data
 }
 void InputFile::LoadDataFromString(const string StringFile, std::vector<VectorData *> *data) {
 //    string file_contents;
-//    char delimiter = ',';
+    char delimiter = ',';
 //    ifstream ifs(filePath);
 //    file_contents = readFile(filePath);
     std::istringstream buffer(StringFile);
     std::string token;
     // split the csv file by \n
-    while (std::getline(buffer, token, '\n')) {
+    while (std::getline(buffer, token, '\r')) {
         string temp;
         std::stringstream ss(token);
         auto *NewVactorData = new VectorData;
@@ -178,7 +178,7 @@ void InputFile::LoadDataFromString(const string StringFile, std::vector<VectorDa
         // end loop to name field
         int sizeofl = listTemp.size();
         for (int i = 0; i < sizeofl; ++i) {
-            if (sizeofl - 1 > i) {
+            if (sizeofl-1  > i) {
                 long double temp2 = std::stod(listTemp.front());
                 listTemp.pop_front();
                 NewVactorData->vectorV.push_back(temp2);

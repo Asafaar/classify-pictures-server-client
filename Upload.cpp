@@ -14,29 +14,15 @@ void Upload::execute() {
     this->dio->read();
     this->dio->write("done");
     std::string string = this->dio->read();
-
     InputFile inputfile;
-    /*
-//     if (!inputfile.CanreadFile(string)){
-//         this->dio.write("input invalid");
-//         return;
-//     }
-     */
     this->dio->write("Upload complete\nPlease upload your local test CSV file");
     this->dio->read();
     this->dio->write("done");
     this->data->classifiedFile = string;
     std::string string2 = this->dio->read();
-
-//     if (!inputfile.CanreadFile(string2)){
-//         this->dio.write("input invalid");
-//        return;
-//     }
-
-//     ../files/iris_classified.csv
-//      */
     this->dio->write("Upload complete");
     this->dio->read();
+    this->dio->write("done");
     this->data->unclassifiedFile = string2;
 
 }

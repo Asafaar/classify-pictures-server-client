@@ -11,9 +11,9 @@
 #include "SocketIO.h"
 #include "DefaultIO.h"
 #include "DisplayResults.h"
+const string tempPort = "12346";
 
 using namespace std;
-
 /**
  * The main func of the server.
  * Responsible for checking input, processing the clients requests and sending the
@@ -26,7 +26,6 @@ using namespace std;
 int main(int argc, char *argv[]) {
     //if (InputFromCommandIsInvalid(argc, argv)) {
     //get port number
-    const string tempPort = "12348";
     const int server_port = std::stoi(tempPort);
     InputFile inputFile;
     int sock = socket(AF_INET, SOCK_STREAM, 0);

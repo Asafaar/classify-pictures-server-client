@@ -6,25 +6,61 @@
 #include <unistd.h>
 #include "../InputFile.h"
 #include <string.h>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
 
-using namespace std;
-void UserSendFiles(string inputLine){
+
+//C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
+//C:/Users/asaf9/CLionProjects/ass4/files/beans_UnClassified.csv
+//C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
+//C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
+const string tempPort = "12346";
+
+class path;
+
+std::string convert_to_wsl_path(std::string windows_path) {
+    std::string wsl_path = windows_path;
+    string  str=wsl_path.substr(0, 1);
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    string string2="/mnt/"+ str;
+    wsl_path.replace(0, 2, string2);
+    return wsl_path;
+}
+//C:/Users/asaf9/OneDrive - Bar-Ilan University/Desktop/iris_classified.csv
+std::string readFile2(string path) {
+    string file_contents;
+    char delimiter = ',';
+
     InputFile inputFile;
-    if (inputLine=="Please upload your local train CSV file" or inputLine=="Please upload your local test CSV file"){
-        if (!inputFile.CanReadFile(inputLine)){
-            inputLine="input invalid";
-            return;
-        } else
-            string inputLine= inputFile.readFile(inputLine);
+    file_contents = inputFile.readFile(path);
+    return file_contents;
 
-    }else
-        return;
+}
+//C:/Users/asaf9/CLionProjects/ass4/files/iris_classified.csv
+///mnt/c/Users/asaf9/CLionProjects/untitled95/files/beans_Classified.csv
+using namespace std;
+string UserSendFiles(string inputLine){
+    InputFile inputFile;
+//    inputLine= convert_to_wsl_path(inputLine);
+//    if (!inputFile.CanReadFile(inputLine)){
+//        return "input invalid";
+//    } else{
+    string string1= readFile2(inputLine);
+//    cout << string1 <<endl;
+    return string1;
+
+}
+//C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
+bool UserLoadCoomand(string buffer){
+    if (buffer=="Please upload your local train CSV file" or buffer=="Upload complete\nPlease upload your local test CSV file"){
+        return true;
+    } else return false;
 }
 
 
 int main(int argc, char *argv[]) {
     const char *ip_address = "127.0.0.1";
-    const string tempPort = "12348";
     const int port_no = std::stoi(tempPort);
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) { perror("error creating socket"); }
@@ -43,8 +79,11 @@ int main(int argc, char *argv[]) {
         if (read_bytes == 0) {
             perror("connection is closed");
         } else if (read_bytes < 0) { perror("Error while reading input!"); }
+
+        bool loadBool;
         if (strcmp(buffer, "done") != 0) {
             cout << buffer << endl;
+            loadBool=UserLoadCoomand(buffer);
             int sent_bytes = send(sock, "ack", 3, 0);
             if (sent_bytes < 0) {
                 perror("An error has occured");
@@ -53,7 +92,10 @@ int main(int argc, char *argv[]) {
         }
         string inputLine;
         getline(cin, inputLine);
-        UserSendFiles(inputLine);
+//        cin >> inputLine;
+        if (loadBool){
+            inputLine=UserSendFiles(inputLine);
+        }
         char *data_addr;
         string str_obj(inputLine);
         data_addr = &str_obj[0];

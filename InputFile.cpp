@@ -25,9 +25,10 @@ using std::istringstream;
  *  @return-the string after check
  */
 string InputFile::readFile(const string &path) {
-    fstream myFile(path);
+    ifstream myFile(path,ios::in);
+//    C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
     string line;
-    string data;
+    string data="";
     if (myFile.is_open()) {
         while (getline(myFile, line)) {
             data += line + "\n";

@@ -14,17 +14,20 @@ DownloadResults::DownloadResults(Data* data,DefaultIO *defaultIo1) {
 
 void DownloadResults::execute() {
     if (data->classifiedFile.empty() or data->unclassifiedFile.empty()){
-        this->dio->write("data upload please.");
+        this->dio->write("Upload the data please.");
+        this->dio->read();
         return;
     }
     if (data->classificationVector->empty()){
-        this->dio->write("data the classify please.");
+        this->dio->write("Classify the data please.");
+        this->dio->read();
         return;
     }
     std::string csvPathToWrite= this->dio->read();
     InputFile inputFile;
     if (!inputFile.CanReadFile(csvPathToWrite)){
         this->dio->write("Invalid path");
+        this->dio->read();
         return;
     }
     std::ofstream file(csvPathToWrite);
@@ -36,6 +39,7 @@ void DownloadResults::execute() {
             file << string1 << std::endl;}
     } else {
         this->dio->write("Failed to open file");
+        this->dio->read();
     }
     file.close();
 

@@ -62,7 +62,6 @@ int main(int argc, char *argv[]) {
         int expected_data_len = sizeof(clientInput);
         while (true) {
             memset(clientInput, '\0', 4096);
-
             Data data;
             SocketIO socketIO(client_sock);
             CLI cli = CLI(&data, &socketIO);

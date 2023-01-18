@@ -5,6 +5,9 @@
 #include <iostream>
 using namespace std;
 std::string DefaultIO::read() {
+    std::string s;
+    std::cin >> s;
+    return s;
 }
 
 void DefaultIO::write(std::string string) {

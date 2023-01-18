@@ -32,9 +32,5 @@ Geometry.o: ass1/Geometry.cpp ass1/Geometry.h
 	g++ -std=c++11 -c    ass1/Geometry.cpp
 Server.o: Server.cpp Server.h
 	g++ -std=c++11 -c   Server.cpp
-client: client.o
-	g++ -std=c++11 client.o -o client
-client.o: ClientFolder/client.cpp
-	g++ -std=c++11  -c   client.cpp
 .PHONY clean:
 	 rm -f *.o

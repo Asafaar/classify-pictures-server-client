@@ -15,6 +15,7 @@
 void ClassifyData::execute() {
     if (data->classifiedFile.empty() || data->unclassifiedFile.empty()) {
         this->dio->write("Upload the data please");
+        this->dio->read();
         return;
     } else {
         InputFile inputFile;

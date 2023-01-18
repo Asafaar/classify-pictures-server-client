@@ -18,6 +18,8 @@ void CLI::start() {
         }
         s += "8. exit";
         command[0]->dio->write(s);
+        command[0]->dio->read();
+        command[0]->dio->write("done");
         std::string string = command[0]->dio->read();
         int UserSelect = stoi(string);
         UserSelect -= 1;
@@ -28,6 +30,7 @@ void CLI::start() {
             command[UserSelect]->execute();
         } else {
             command[0]->dio->write("invalid input");
+            command[0]->dio->read();
         }
     }
 }

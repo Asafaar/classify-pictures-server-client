@@ -14,10 +14,12 @@ DisplayResults::DisplayResults(Data *data,DefaultIO *defaultIo1) {
 void DisplayResults::execute() {
     if (data->classifiedFile.empty() or data->unclassifiedFile.empty()){
         this->dio->write("Upload the data please.");
+        this->dio->read();
         return;
     }
     if (data->classificationVector->empty()){
         this->dio->write("Classify the data please.");
+        this->dio->read();
         return;
     }
 
@@ -26,7 +28,9 @@ void DisplayResults::execute() {
         int j=i+1;
         std::string string1=j+"  "+ *(data->classificationVector->at(i));
         this->dio->write(string1);
+        this->dio->read();
     }
     this->dio->write("Done.");
+    this->dio->read();
 
 }

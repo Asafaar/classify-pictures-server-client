@@ -20,9 +20,11 @@ void UserSendFiles(string inputLine){
     }else
         return;
 }
+
+
 int main(int argc, char *argv[]) {
     const char *ip_address = "127.0.0.1";
-    const string tempPort = "12347";
+    const string tempPort = "12348";
     const int port_no = std::stoi(tempPort);
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) { perror("error creating socket"); }
@@ -38,11 +40,17 @@ int main(int argc, char *argv[]) {
         //memset(buffer, 0, 4096);
         int read_bytes = recv(sock, buffer, expected_data_len, 0);
         //if (strcmp(buffer, "done") == 0) { break; }
-        cout << buffer << endl;
-
         if (read_bytes == 0) {
             perror("connection is closed");
         } else if (read_bytes < 0) { perror("Error while reading input!"); }
+        if (strcmp(buffer, "done") != 0) {
+            cout << buffer << endl;
+            int sent_bytes = send(sock, "ack", 3, 0);
+            if (sent_bytes < 0) {
+                perror("An error has occured");
+            }
+            continue;
+        }
         string inputLine;
         getline(cin, inputLine);
         UserSendFiles(inputLine);

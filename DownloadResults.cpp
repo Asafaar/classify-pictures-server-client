@@ -46,7 +46,10 @@ void DownloadResults::execute() {
     }
     //I send get data to enter the loop in the client,the csvPathToWrite is tha path that the user want to save the datas
     this->dio->write("get data");
+    this->dio->read();
+    this->dio->write("done");
     this->dio->write(csvPathToWrite);
+    this->dio->read();
     std::istringstream buffer(string1);
     string temp;
     while (std::getline(buffer, temp,'\n')){

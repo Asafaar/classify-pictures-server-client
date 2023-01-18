@@ -5,11 +5,9 @@
 #include <iostream>
 using namespace std;
 std::string DefaultIO::read() {
-    return "";
 }
 
 void DefaultIO::write(std::string string) {
-    std::cout <<string<<std::endl;
 }
 
 

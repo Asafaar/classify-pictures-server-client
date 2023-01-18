@@ -21,14 +21,14 @@ using namespace std;
      this->data->classifiedFile=string;
 
      std::string string2=this->dio->read();
-     /*
+
 //     if (!inputfile.CanreadFile(string2)){
 //         this->dio.write("input invalid");
-//         return;
+//        return;
 //     }
 
-     ../files/iris_classified.csv
-      */
+//     ../files/iris_classified.csv
+//      */
      this->dio->write("Upload complete");
      this->data->unclassifiedFile=string2;
 

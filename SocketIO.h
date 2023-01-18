@@ -7,12 +7,12 @@
 
 #include "DefaultIO.h"
 
-class SocketIO : public DefaultIO {
+class SocketIO : public  DefaultIO {
 public:
-    explicit SocketIO(int sockNum);
+    SocketIO();
 
+    SocketIO(int sockNum);
     std::string read() override;
-
     void write(std::string string) override;
 
 private:

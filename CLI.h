@@ -13,7 +13,6 @@ public:
     Data* data;
     Command *command[5]{};
     DefaultIO* defaultIo;
-    SocketIO* socketIO;
     CLI(Data* data, DefaultIO* defaultIo1);
     //CLI(Data* data, SocketIO* socketIO1);
 

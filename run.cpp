@@ -12,10 +12,10 @@
 using std::cout;
 
 void run() {
-    Data data;
-    StandareIO standareIo;
-    CLI cli=CLI(&data,&standareIo);
-    cli.start();
+//    Data data;
+//    SocketIO standareIo;
+//    CLI cli=CLI(&data,&standareIo);
+//    cli.start();
 
 
 

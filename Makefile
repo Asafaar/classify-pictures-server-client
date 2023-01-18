@@ -34,7 +34,7 @@ Server.o: Server.cpp Server.h
 	g++ -std=c++11 -c   Server.cpp
 client: client.o
 	g++ -std=c++11 client.o -o client
-client.o: client.cpp
+client.o: ClientFolder/client.cpp
 	g++ -std=c++11  -c   client.cpp
 .PHONY clean:
 	 rm -f *.o

@@ -26,7 +26,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     //if (InputFromCommandIsInvalid(argc, argv)) {
     //get port number
-    const string tempPort = "12345";
+    const string tempPort = "12348";
     const int server_port = std::stoi(tempPort);
     InputFile inputFile;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -64,8 +64,8 @@ int main(int argc, char *argv[]) {
             memset(clientInput, '\0', 4096);
 
             Data data;
-            DefaultIO *socketIO = new SocketIO(client_sock);
-            CLI cli = CLI(&data, socketIO);
+            SocketIO socketIO(client_sock);
+            CLI cli = CLI(&data, &socketIO);
             cli.start();
 
         }

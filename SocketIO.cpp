@@ -24,7 +24,9 @@ void SocketIO::write(std::string str) {
     strcpy(arr, str.c_str());
     send(client_sock, arr, str.length() + 1, 0);
 }
-
+SocketIO::SocketIO(){
+    this->client_sock=0;
+}
 SocketIO::SocketIO(int sockNum) {
     this->client_sock = sockNum;
 }

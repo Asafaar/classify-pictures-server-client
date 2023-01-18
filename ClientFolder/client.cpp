@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(port_no);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
-    bool loadBool = false;
+    bool loadBool = false, downloadBool = false;
     while (true) {
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
@@ -84,25 +84,38 @@ int main(int argc, char *argv[]) {
             perror("connection is closed");
         } else if (read_bytes < 0) { perror("Error while reading input!"); }
 
-        if (strcmp(buffer, "done") != 0 and strcmp(buffer, "get data")!= 0) {
+        if (strcmp(buffer, "done") != 0) {
             cout << buffer << endl;
             loadBool = UserLoadCoomand(buffer);
+            if (strcmp(buffer, "get data") == 0) { downloadBool = true; }
             int sent_bytes = send(sock, "ack", 4, 0);
             if (sent_bytes < 0) {
                 perror("An error has occured");
             }
             continue;
         }
-        if (strcmp(buffer, "get data")==0){
-            recv(sock, buffer, expected_data_len, 0);
-            string namefile=buffer;
+        if (downloadBool) {
+            string namefile = buffer;
             std::ofstream myfile;
-            myfile.open (namefile);
+            myfile.open(namefile);
             string line;
-            while(strlen(buffer)!=0){
-                recv(sock, buffer, expected_data_len, 0);
-                myfile << buffer<<endl;
+            while (true) {
+                //memset(buffer, 0, 4096);
+                read_bytes = recv(sock, buffer, expected_data_len, 0);
+                //if (strcmp(buffer, "done") == 0) { break; }
+                if (read_bytes == 0) {
+                    perror("connection is closed");
+                } else if (read_bytes < 0) { perror("Error while reading input!"); }
 
+                if (strcmp(buffer, "done") != 0) {
+                    int sent_bytes = send(sock, "ack", 4, 0);
+                    if (sent_bytes < 0) {
+                        perror("An error has occured");
+                    }
+                    myfile << buffer << endl;
+                    continue;
+                }
+                break;
             }
             myfile.close();
             continue;
@@ -130,7 +143,7 @@ int main(int argc, char *argv[]) {
                 }
                 file.close();
                 loadBool = false;
-                char* data_addr;
+                char *data_addr;
                 string str_obj("done");
                 data_addr = &str_obj[0];
                 send(sock, data_addr, 5, 0);
@@ -139,8 +152,8 @@ int main(int argc, char *argv[]) {
             }
         }
         char *data_addr;
-        if (inputLine.empty()){
-            inputLine="empty";
+        if (inputLine.empty()) {
+            inputLine = "empty";
         }
         string str_obj(inputLine);
         data_addr = &str_obj[0];

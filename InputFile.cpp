@@ -8,7 +8,7 @@
 #include "KnnClassification.h"
 #include "ass1/Geometry.h"
 #include <regex>
-
+#include <thread>
 using namespace std;
 using std::cout;
 using std::cerr;

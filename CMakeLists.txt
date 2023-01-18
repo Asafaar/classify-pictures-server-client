@@ -16,3 +16,4 @@ file(GLOB SRC_FILES
 target_sources(ass4 PUBLIC
         ${SRC_FILES}
         )
+target_link_libraries(ass4 pthread)

@@ -156,6 +156,40 @@ void InputFile::LoadData(const string &filePath, std::vector<VectorData *> *data
         data->push_back(NewVactorData);
     }
 }
+void InputFile::LoadDataFromString(const string StringFile, std::vector<VectorData *> *data) {
+//    string file_contents;
+//    char delimiter = ',';
+//    ifstream ifs(filePath);
+//    file_contents = readFile(filePath);
+    std::istringstream buffer(StringFile);
+    std::string token;
+    // split the csv file by \n
+    while (std::getline(buffer, token, '\n')) {
+        string temp;
+        std::stringstream ss(token);
+        auto *NewVactorData = new VectorData;
+        std::list<string> listTemp;
+        // split row by  "," and enter one the temp list
+        while (std::getline(ss, temp, delimiter)) {
+            listTemp.push_back(temp);
+
+        }
+        // make for loop,enter the num in the list to vectorV and the name in the
+        // end loop to name field
+        int sizeofl = listTemp.size();
+        for (int i = 0; i < sizeofl; ++i) {
+            if (sizeofl - 1 > i) {
+                long double temp2 = std::stod(listTemp.front());
+                listTemp.pop_front();
+                NewVactorData->vectorV.push_back(temp2);
+            } else {
+                NewVactorData->name = listTemp.front();
+            }
+        }
+        // enter to the main data
+        data->push_back(NewVactorData);
+    }
+}
 
 /** kCheckIfBiggerFromLengthOfData
  * check if the number of vectors from the csv file is smaller than k-num, if k-num is bigger

@@ -10,6 +10,8 @@ class SocketIO : public  DefaultIO {
 public:
     std::string gotMessage = "ack";
     std::string sendAnswer = "done";
+    std::string terminateClient = "terminate";
+
     SocketIO(int sockNum);
     std::string read() override;
     void write(std::string string) override;

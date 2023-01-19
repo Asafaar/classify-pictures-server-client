@@ -4,50 +4,49 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "../InputFile.h"
 #include <string.h>
 #include <fstream>
 #include <algorithm>
 #include "../SocketIO.h"
-const string tempPort = "12346";
 
+const std::string tempPort = "12346";
 class path;
-
-std::string convert_to_wsl_path(std::string windows_path) {
-    std::string wsl_path = windows_path;
-    string str = wsl_path.substr(0, 1);
-    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-    string string2 = "/mnt/" + str;
-    wsl_path.replace(0, 2, string2);
-    return wsl_path;
-}
-
-//C:/Users/asaf9/OneDrive - Bar-Ilan University/Desktop/iris_classified.csv
-std::string readFile2(string path) {
-    string file_contents;
-    char delimiter = ',';
-
-    InputFile inputFile;
-    file_contents = inputFile.readFile(path);
-    return file_contents;
-
-}
-//C:/Users/asaf9/CLionProjects/ass4/files/iris_classified.csv
-///mnt/c/Users/asaf9/CLionProjects/untitled95/files/beans_Classified.csv
 using namespace std;
 
-string UserSendFiles(string inputLine) {
-    //InputFile inputFile;
-//    inputLine= convert_to_wsl_path(inputLine);
-//    if (!inputFile.CanReadFile(inputLine)){
-//        return "input invalid";
-//    } else{
-    string string1 = readFile2(inputLine);
-//    cout << string1 <<endl;
-    return string1;
+void sendFile(SocketIO *socketIo, string inputLine) {
+    fstream file;
+    file.open(inputLine, ios::in);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            socketIo->write(line);
+            socketIo->read();
+        }
+        file.close();
+        socketIo->write(socketIo->sendAnswer);
+        socketIo->read();
+    }
+    return;
 }
 
-//C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
+void createFile(SocketIO *socketIo) {
+    string fileName = socketIo->read(), currServerInput;
+    socketIo->write(socketIo->gotMessage);
+    std::ofstream myFile;
+    myFile.open(fileName);
+    while (true) {
+        currServerInput = socketIo->read();
+        if (currServerInput != socketIo->sendAnswer) {
+            socketIo->write(socketIo->gotMessage);
+            myFile << currServerInput << "\n";
+            continue;
+        }
+        break;
+    }
+    myFile.close();
+    return;
+}
+
 bool UserLoadCommand(string buffer) {
     if (buffer == "Please upload your local train CSV file" or
         buffer == "Upload complete\nPlease upload your local test CSV file") {
@@ -56,6 +55,7 @@ bool UserLoadCommand(string buffer) {
 }
 
 const int port_no = 12346;
+
 int main(int argc, char *argv[]) {
     int serverPort = std::stoi(tempPort);
     const char *ip_address = "127.0.0.1";
@@ -66,85 +66,35 @@ int main(int argc, char *argv[]) {
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(port_no);
-    auto* socketIo = new SocketIO(sock);
+    auto *socketIo = new SocketIO(sock);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
     bool loadBool = false, downloadBool = false;
     while (true) {
-        //char buffer[4096];
-        //int expected_data_len = sizeof(buffer);
-        //memset(buffer, 0, 4096);
         string currServerInput = socketIo->read();
-
+        if (currServerInput == socketIo->terminateClient) { break; }
+        // If the server wishes to get an answer, skip and send the answer
         if (currServerInput != socketIo->sendAnswer) {
-
             printf("%s\n", currServerInput.c_str());
             loadBool = UserLoadCommand(currServerInput);
             if (currServerInput == "get data") { downloadBool = true; }
             socketIo->write(socketIo->gotMessage);
             continue;
         }
+        // Client wants to download a file
         if (downloadBool) {
-            string fileName = socketIo->read();
-            socketIo->write(socketIo->gotMessage);
-            std::ofstream myFile;
-            myFile.open(fileName);
-            while (true) {
-                currServerInput = socketIo->read();
-                if (currServerInput != socketIo->sendAnswer) {
-                    socketIo->write(socketIo->gotMessage);
-                    myFile << currServerInput << "\n";
-                    continue;
-                }
-                break;
-            }
-            myFile.close();
+            createFile(socketIo);
+            downloadBool = false;
             continue;
         }
         string inputLine;
         getline(cin, inputLine);
+        // Client wants to send files to the server
         if (loadBool) {
-            fstream file;
-            //inputLine=UserSendFiles(inputLine);
-            file.open(inputLine, ios::in);
-            if (file.is_open()) {
-                string line;
-                while (getline(file, line)) {
-                    socketIo->write(line);
-                    /*
-                    char *data_addr;
-                    string str_obj(line);
-                    data_addr = &str_obj[0];
-                    int dataLen = line.size();
-                    int sent_bytes = send(sock, data_addr, dataLen, 0);
-                    if (sent_bytes < 0) {
-                        perror("An error has occurred");
-                    }
-                     */
-                    socketIo->read();
-                    //recv(sock, buffer, expected_data_len, 0);
-                    //../files/iris_Classified.csv
-                    // ../files/iris_Unclassified.csv
-                }
-                file.close();
-                loadBool = false;
-                socketIo->write(socketIo->sendAnswer);
-                socketIo->read();
-                continue;
-            }
-        }
-       if (inputLine.empty()) {
-            inputLine = "empty";
+            sendFile(socketIo, inputLine);
+            loadBool = false;
+            continue;
         }
         socketIo->write(inputLine);
-        /*
-        string str_obj(inputLine);
-        data_addr = &str_obj[0];
-        int dataLen = inputLine.size();
-        int sent_bytes = send(sock, data_addr, dataLen, 0);
-        if (sent_bytes < 0) {
-            perror("An error has occurred");
-        }
-         */
     }
     close(sock);
     return 0;

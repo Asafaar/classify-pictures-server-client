@@ -70,7 +70,6 @@ int main(int argc, char *argv[]) {
         }
         std::thread t(handle_client, client_sock);
         t.detach();
-
     }
     // Infinite loop
     /*

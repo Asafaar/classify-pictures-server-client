@@ -15,7 +15,7 @@
 //C:/Users/asaf9/CLionProjects/ass4/files/beans_UnClassified.csv
 //C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
 //C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
-const string tempPort = "12346";
+const string tempPort = "12347";
 
 class path;
 
@@ -43,7 +43,7 @@ std::string readFile2(string path) {
 using namespace std;
 
 string UserSendFiles(string inputLine) {
-    InputFile inputFile;
+    //InputFile inputFile;
 //    inputLine= convert_to_wsl_path(inputLine);
 //    if (!inputFile.CanReadFile(inputLine)){
 //        return "input invalid";
@@ -64,9 +64,9 @@ bool UserLoadCommand(string buffer) {
 
 int main(int argc, char *argv[]) {
     int serverPort = std::stoi(tempPort);
-    auto* socketIo = new SocketIO(serverPort);
+    auto* socketIo = new SocketIO(12347);
     const char *ip_address = "127.0.0.1";
-    const int port_no = std::stoi(tempPort);
+    const int port_no = 12346;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) { perror("error creating socket"); }
     struct sockaddr_in sin;
@@ -80,26 +80,26 @@ int main(int argc, char *argv[]) {
         //char buffer[4096];
         //int expected_data_len = sizeof(buffer);
         //memset(buffer, 0, 4096);
+        cout << "1" << endl;
         string currServerInput = socketIo->read();
+        cout << "2" << endl;
 
         if (currServerInput != "done") {
-            cout << currServerInput << endl;
+            cout << "3" << endl;
+            printf("%s\n", currServerInput.c_str());// currServerInput << endl;
             loadBool = UserLoadCommand(currServerInput);
             if (currServerInput == "get data") { downloadBool = true; }
             socketIo->write("ack");
+            cout << "4" << endl;
             continue;
         }
         if (downloadBool) {
-            currServerInput = socketIo->read();
+            string fileName = socketIo->read();
             socketIo->write("ack");
-
-            string fileName = currServerInput;
             std::ofstream myFile;
             myFile.open(fileName);
-            string line;
             while (true) {
                 currServerInput = socketIo->read();
-
                 if (currServerInput != "done") {
                     socketIo->write("ack");
                     myFile << currServerInput << "\n";

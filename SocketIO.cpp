@@ -22,9 +22,10 @@ std::string SocketIO::read() {
 }
 
 void SocketIO::write(std::string str) {
-    char arr[str.length() + 1];
+    int arrSize = str.length() + 1;
+    char arr[arrSize];
     strcpy(arr, str.c_str());
-    send(client_sock, arr, str.length() + 1, 0);
+    send(client_sock, arr, arrSize, 0);
 }
 
 SocketIO::SocketIO() {

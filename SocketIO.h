@@ -6,11 +6,10 @@
 #define ASS4_SOCKETIO_H
 
 #include "DefaultIO.h"
-
 class SocketIO : public  DefaultIO {
 public:
-    SocketIO();
-
+    std::string gotMessage = "ack";
+    std::string sendAnswer = "done";
     SocketIO(int sockNum);
     std::string read() override;
     void write(std::string string) override;

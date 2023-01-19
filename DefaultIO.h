@@ -9,6 +9,8 @@
 
 class DefaultIO {
 public:
+    std::string gotMessage = "ack";
+    std::string sendAnswer = "done";
     virtual std::string read();
 
     virtual void write(std::string string);

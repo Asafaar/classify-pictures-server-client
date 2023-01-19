@@ -28,10 +28,6 @@ void SocketIO::write(std::string str) {
     send(client_sock, arr, arrSize, 0);
 }
 
-SocketIO::SocketIO() {
-    this->client_sock = 0;
-}
-
 SocketIO::SocketIO(int sockNum) {
     this->client_sock = sockNum;
 }

@@ -1,7 +1,3 @@
-//
-// Created by asaf9 on 1/9/2023.
-//
-
 #include "DisplayResults.h"
 
 DisplayResults::DisplayResults(Data *data,DefaultIO *defaultIo1) {
@@ -32,5 +28,4 @@ void DisplayResults::execute() {
     }
     this->dio->write(string1);
     this->dio->read();
-    this->dio->write("done");
 }

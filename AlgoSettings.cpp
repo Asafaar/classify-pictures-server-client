@@ -38,7 +38,7 @@ bool AlgoSettings::IsAPositiveNumber(string *s) {
 void AlgoSettings::execute() {
     this->dio->write("The current KNN parameters are: k = " + this->data->Knum + ", distance mertic = " + this->data->dis);
     this->dio->read();
-    this->dio->write("done");
+    this->dio->write(this->dio->sendAnswer);
     std::string stringInput = this->dio->read();
     if (stringInput=="empty") {
 //        this->dio.write("The string is empty!");

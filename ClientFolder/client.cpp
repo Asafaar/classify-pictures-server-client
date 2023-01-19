@@ -75,23 +75,23 @@ int main(int argc, char *argv[]) {
         //memset(buffer, 0, 4096);
         string currServerInput = socketIo->read();
 
-        if (currServerInput != "done") {
+        if (currServerInput != socketIo->sendAnswer) {
 
-            printf("%s\n", currServerInput.c_str());// currServerInput << endl;
+            printf("%s\n", currServerInput.c_str());
             loadBool = UserLoadCommand(currServerInput);
             if (currServerInput == "get data") { downloadBool = true; }
-            socketIo->write("ack");
+            socketIo->write(socketIo->gotMessage);
             continue;
         }
         if (downloadBool) {
             string fileName = socketIo->read();
-            socketIo->write("ack");
+            socketIo->write(socketIo->gotMessage);
             std::ofstream myFile;
             myFile.open(fileName);
             while (true) {
                 currServerInput = socketIo->read();
-                if (currServerInput != "done") {
-                    socketIo->write("ack");
+                if (currServerInput != socketIo->sendAnswer) {
+                    socketIo->write(socketIo->gotMessage);
                     myFile << currServerInput << "\n";
                     continue;
                 }
@@ -127,13 +127,12 @@ int main(int argc, char *argv[]) {
                 }
                 file.close();
                 loadBool = false;
-                socketIo->write("done");
+                socketIo->write(socketIo->sendAnswer);
                 socketIo->read();
                 continue;
             }
         }
-        char *data_addr;
-        if (inputLine.empty()) {
+       if (inputLine.empty()) {
             inputLine = "empty";
         }
         socketIo->write(inputLine);

@@ -29,15 +29,9 @@ void DownloadResults::execute() {
     }
     this->dio->write("Enter path");
     this->dio->read();
-    this->dio->write("done");
+    this->dio->write(this->dio->sendAnswer);
     std::string csvPathToWrite= this->dio->read();
-//    InputFile inputFile;
-//    if (!inputFile.CanReadFile(csvPathToWrite)){
-//        this->dio->write("Invalid path");
-//        this->dio->read();
-//        return;
-//    }
-//    std::ofstream file(csvPathToWrite);
+
     int size=sizeof(data->classificationVector);
     std::string string1;
     for (int i = 0; i < size; i++){
@@ -47,7 +41,7 @@ void DownloadResults::execute() {
     //I send get data to enter the loop in the client,the csvPathToWrite is tha path that the user want to save the datas
     this->dio->write("get data");
     this->dio->read();
-    this->dio->write("done");
+    this->dio->write(this->dio->sendAnswer);
     this->dio->write(csvPathToWrite);
     this->dio->read();
     std::istringstream buffer(string1);
@@ -56,6 +50,6 @@ void DownloadResults::execute() {
         this->dio->write(temp);
         this->dio->read();
     }
-    this->dio->write("done");
+    this->dio->write(this->dio->sendAnswer);
 
 }

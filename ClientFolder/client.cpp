@@ -6,9 +6,9 @@
 #include <unistd.h>
 #include "../InputFile.h"
 #include <string.h>
-#include <sstream>
 #include <fstream>
 #include <algorithm>
+#include "../SocketIO.h"
 
 
 //C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
@@ -54,7 +54,7 @@ string UserSendFiles(string inputLine) {
 }
 
 //C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
-bool UserLoadCoomand(string buffer) {
+bool UserLoadCommand(string buffer) {
     if (buffer == "Please upload your local train CSV file" or
         buffer == "Upload complete\nPlease upload your local test CSV file") {
         return true;
@@ -63,6 +63,8 @@ bool UserLoadCoomand(string buffer) {
 
 
 int main(int argc, char *argv[]) {
+    int serverPort = std::stoi(tempPort);
+    auto* socketIo = new SocketIO(serverPort);
     const char *ip_address = "127.0.0.1";
     const int port_no = std::stoi(tempPort);
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -75,52 +77,37 @@ int main(int argc, char *argv[]) {
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
     bool loadBool = false, downloadBool = false;
     while (true) {
-        char buffer[4096];
-        int expected_data_len = sizeof(buffer);
+        //char buffer[4096];
+        //int expected_data_len = sizeof(buffer);
         //memset(buffer, 0, 4096);
-        int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        //if (strcmp(buffer, "done") == 0) { break; }
-        if (read_bytes == 0) {
-            perror("connection is closed");
-        } else if (read_bytes < 0) { perror("Error while reading input!"); }
+        string currServerInput = socketIo->read();
 
-        if (strcmp(buffer, "done") != 0) {
-            cout << buffer << endl;
-            loadBool = UserLoadCoomand(buffer);
-            if (strcmp(buffer, "get data") == 0) { downloadBool = true; }
-            int sent_bytes = send(sock, "ack", 4, 0);
-            if (sent_bytes < 0) {
-                perror("An error has occured");
-            }
+        if (currServerInput != "done") {
+            cout << currServerInput << endl;
+            loadBool = UserLoadCommand(currServerInput);
+            if (currServerInput == "get data") { downloadBool = true; }
+            socketIo->write("ack");
             continue;
         }
         if (downloadBool) {
-            recv(sock, buffer, expected_data_len, 0);
-            send(sock, "ack", 4, 0);
+            currServerInput = socketIo->read();
+            socketIo->write("ack");
 
-            string namefile = buffer;
-            std::ofstream myfile;
-            myfile.open(namefile);
+            string fileName = currServerInput;
+            std::ofstream myFile;
+            myFile.open(fileName);
             string line;
             while (true) {
-                //memset(buffer, 0, 4096);
-                read_bytes = recv(sock, buffer, expected_data_len, 0);
-                //if (strcmp(buffer, "done") == 0) { break; }
-                if (read_bytes == 0) {
-                    perror("connection is closed");
-                } else if (read_bytes < 0) { perror("Error while reading input!"); }
+                currServerInput = socketIo->read();
 
-                if (strcmp(buffer, "done") != 0) {
-                    int sent_bytes = send(sock, "ack", 4, 0);
-                    if (sent_bytes < 0) {
-                        perror("An error has occured");
-                    }
-                    myfile << buffer << "\n";
+                if (currServerInput != "done") {
+                    socketIo->write("ack");
+                    myFile << currServerInput << "\n";
                     continue;
                 }
                 break;
             }
-            myfile.close();
+            myFile.close();
             continue;
         }
         string inputLine;
@@ -132,6 +119,8 @@ int main(int argc, char *argv[]) {
             if (file.is_open()) {
                 string line;
                 while (getline(file, line)) {
+                    socketIo->write(line);
+                    /*
                     char *data_addr;
                     string str_obj(line);
                     data_addr = &str_obj[0];
@@ -140,17 +129,16 @@ int main(int argc, char *argv[]) {
                     if (sent_bytes < 0) {
                         perror("An error has occurred");
                     }
-                    recv(sock, buffer, expected_data_len, 0);
+                     */
+                    socketIo->read();
+                    //recv(sock, buffer, expected_data_len, 0);
                     //../files/iris_Classified.csv
                     // ../files/iris_Unclassified.csv
                 }
                 file.close();
                 loadBool = false;
-                char *data_addr;
-                string str_obj("done");
-                data_addr = &str_obj[0];
-                send(sock, data_addr, 5, 0);
-                recv(sock, buffer, expected_data_len, 0);
+                socketIo->write("done");
+                socketIo->read();
                 continue;
             }
         }
@@ -158,6 +146,8 @@ int main(int argc, char *argv[]) {
         if (inputLine.empty()) {
             inputLine = "empty";
         }
+        socketIo->write(inputLine);
+        /*
         string str_obj(inputLine);
         data_addr = &str_obj[0];
         int dataLen = inputLine.size();
@@ -165,6 +155,7 @@ int main(int argc, char *argv[]) {
         if (sent_bytes < 0) {
             perror("An error has occurred");
         }
+         */
     }
     close(sock);
     return 0;

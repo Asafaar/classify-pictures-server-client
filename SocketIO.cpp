@@ -18,7 +18,7 @@ std::string SocketIO::read() {
         perror("Error - Negative input!");
     }
     string str = clientInput;
-    return str;//.substr(0, clientInputSize - 1);
+    return str;
 }
 
 void SocketIO::write(std::string str) {

@@ -12,7 +12,7 @@
 #include "SocketIO.h"
 #include "DefaultIO.h"
 #include "DisplayResults.h"
-const string tempPort = "12347";
+const string tempPort = "12346";
 void handle_client(int client_socket){
     char clientInput[4096];
     int expected_data_len = sizeof(clientInput);

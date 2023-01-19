@@ -9,13 +9,7 @@
 #include <fstream>
 #include <algorithm>
 #include "../SocketIO.h"
-
-
-//C:/Users/asaf9/CLionProjects/client deubg/files/beans_Classified.csv
-//C:/Users/asaf9/CLionProjects/ass4/files/beans_UnClassified.csv
-//C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
-//C:\Users\asaf9\OneDrive - Bar-Ilan University\Desktop\iris_classified.csv
-const string tempPort = "12347";
+const string tempPort = "12346";
 
 class path;
 
@@ -61,12 +55,10 @@ bool UserLoadCommand(string buffer) {
     } else return false;
 }
 
-
+const int port_no = 12346;
 int main(int argc, char *argv[]) {
     int serverPort = std::stoi(tempPort);
-    auto* socketIo = new SocketIO(12347);
     const char *ip_address = "127.0.0.1";
-    const int port_no = 12346;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) { perror("error creating socket"); }
     struct sockaddr_in sin;
@@ -74,23 +66,21 @@ int main(int argc, char *argv[]) {
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(port_no);
+    auto* socketIo = new SocketIO(sock);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
     bool loadBool = false, downloadBool = false;
     while (true) {
         //char buffer[4096];
         //int expected_data_len = sizeof(buffer);
         //memset(buffer, 0, 4096);
-        cout << "1" << endl;
         string currServerInput = socketIo->read();
-        cout << "2" << endl;
 
         if (currServerInput != "done") {
-            cout << "3" << endl;
+
             printf("%s\n", currServerInput.c_str());// currServerInput << endl;
             loadBool = UserLoadCommand(currServerInput);
             if (currServerInput == "get data") { downloadBool = true; }
             socketIo->write("ack");
-            cout << "4" << endl;
             continue;
         }
         if (downloadBool) {
@@ -160,4 +150,3 @@ int main(int argc, char *argv[]) {
     close(sock);
     return 0;
 }
-

@@ -12,3 +12,5 @@ SocketIO.o: ../SocketIO.cpp ../SocketIO.h
 	g++ -std=c++11 -c    ../SocketIO.cpp
 DefaultIO.o: ../DefaultIO.cpp ../DefaultIO.h
 	g++ -std=c++11  -c   ../DefaultIO.cpp
+.PHONY clean:
+	 rm -f *.o

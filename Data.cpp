@@ -1,6 +1,6 @@
-//
-// Created by asaf9 on 1/9/2023.
-//
+/**
+ * Some basic data for the program.
+ */
 
 #include "Data.h"
 

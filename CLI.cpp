@@ -43,7 +43,7 @@ void CLI::start() {
 
         if (UserSelect >= 0 and UserSelect <= 4) {
             command[UserSelect]->execute();
-            return;
+            continue;
         } else {    // Digit is 5-7, 9 or 0
             command[0]->dio->write("Invalid input!\nTry again:");
             command[0]->dio->read();

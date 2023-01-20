@@ -97,5 +97,5 @@ int main(int argc, char *argv[]) {
         socketIo->write(inputLine);
     }
     close(sock);
-    return 0;
+    //return 0;
 }

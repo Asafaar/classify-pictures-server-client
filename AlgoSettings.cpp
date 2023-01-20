@@ -73,22 +73,20 @@ void AlgoSettings::execute() {
         // Check if the metric is valid
         bool disIsOk = inputFile.distanceIsValid(*clientInput[1]);
         // K is not valid
-        if (!kIsOk) {
+        if (kIsOk)  {
+            this->data->Knum = *clientInput[0];
+        } else {
             this->dio->write("Invalid value for K");
             this->dio->read();
         }
         // The metric is not valid
-        if (!disIsOk) {
+        if (disIsOk) {
+            this->data->dis = *clientInput[1];
+        } else {
             this->dio->write("Invalid value for metric");
             this->dio->read();
         }
-        // Both are valid
-        if (disIsOk and kIsOk) {
-            this->data->Knum = *clientInput[0];
-            this->data->dis = *clientInput[1];
-        }
         return;
-
     }
 }
 

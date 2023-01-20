@@ -1,12 +1,9 @@
-//
-// Created by asaf9 on 1/9/2023.
-//
-
+/**
+ * Command class with a virtual execute function.
+ */
 #include "Command.h"
 
-//void Command::execute() {
-//
-//}
-void Command::execute() {
-
-}
+/**
+ * Execute - so we can run all command subclasses with this function.
+ */
+void Command::execute() {}

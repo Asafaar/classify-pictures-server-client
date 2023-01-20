@@ -1,11 +1,13 @@
 #-std=c++11
 all: Server client clean
-Server:  Server.o  InputFile.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o
-	g++ -std=c++11 -pthread  Server.o  InputFile.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o -o Server
+Server:  Server.o  InputFile.o SendClassifiedVectors.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o
+	g++ -std=c++11 -pthread  Server.o  SendClassifiedVectors.o InputFile.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o -o Server
 InputFile.o: InputFile.cpp InputFile.h
 	g++ -std=c++11  -c   InputFile.cpp
 SocketIO.o: SocketIO.cpp SocketIO.h
 	g++ -std=c++11  -c   SocketIO.cpp
+SendClassifiedVectors: SendClassifiedVectors.cpp SendClassifiedVectors.h
+	g++ -std=c++11	-c	SendClassifiedVectors.cpp
 StandareIO.o: StandareIO.cpp StandareIO.h
 	g++ -std=c++11  -c   StandareIO.cpp
 Upload.o: Upload.cpp Upload.h

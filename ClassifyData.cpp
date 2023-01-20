@@ -1,32 +1,32 @@
-//
-// Created by asaf9 on 1/9/2023.
-//
+/**
+ * This class classifies the data using algorithms in the knn class.
+ * The params for classifications are defined in AlgoSettings.
+ */
 #include <fstream>
 #include "InputFile.h"
 #include "ClassifyData.h"
 #include "Data.h"
 #include <iostream>
-#include <string.h>
 #include <vector>
 #include <sstream>
 #include <list>
 #include "KnnClassification.h"
 
+/**
+ * Run the classification algorithm on every unclassified vector.
+ */
 void ClassifyData::execute() {
+    // Some input wasn't received from the client
     if (data->classifiedFile.empty() || data->unclassifiedFile.empty()) {
         this->dio->write("Upload the data please");
         this->dio->read();
-        this->dio->write(this->dio->sendAnswer);
         return;
     } else {
         InputFile inputFile;
         auto *classifiedVector = new std::vector<VectorData *>;
         auto vectorToClassify = new std::vector<vector<long double> *>;
         inputFile.LoadDataFromString(this->data->classifiedFile, classifiedVector);
-//        string file_contents;
         char delimiter = ',';
-//        ifstream ifs(this->data->unclassifiedFile);
-//        file_contents = inputFile.readFile(this->data->unclassifiedFile);
         std::istringstream buffer(this->data->unclassifiedFile);
         std::string token;
         // split the csv file by \n
@@ -54,14 +54,15 @@ void ClassifyData::execute() {
         int d=sizeof(vectorToClassify);
         for (int i = 0; i <d ; ++i) {
             this->data->classificationVector->push_back(knn(classifiedVector, *vectorToClassify->at(i), this->data->dis, stoi(this->data->Knum)));
-
-
         }
-
     }
 }
 
-
+/**
+ * Constructor for the class.
+ * @param data - Basic data class.
+ * @param defaultIo1 - A *defaultIo to send and receive input.
+ */
 ClassifyData::ClassifyData(Data *data,DefaultIO *defaultIo1) {
     this->description = "classify data";
     this->data = data;

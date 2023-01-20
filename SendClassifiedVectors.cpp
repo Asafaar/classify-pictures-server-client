@@ -22,6 +22,7 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
         dio->read();
         return;
     }
+    // Get path for file
     if (createFile) {
         dio->write("Enter path");
         dio->read();
@@ -39,12 +40,10 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
     int size=sizeof(data->classificationVector);
     std::string classificationToSend;
     for (int i = 0; i < size; i++){
-        //classificationToSend = "";
-        int j=i+1;
-        //classificationToSend+=std::to_string(j)+"  "+ *(data->classificationVector->at(i));
         dio->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)));
         dio->read();
     }
+    // Let client know he needs to close the file.
     if (createFile) {
         dio->write(dio->sendAnswer);
     }

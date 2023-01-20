@@ -29,7 +29,7 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
         dio->write(dio->sendAnswer);
         std::string csvPathToWrite= dio->read();
 
-        dio->write("get data");
+        dio->write("Sending data...");
         dio->read();
         dio->write(dio->sendAnswer);
         dio->write(csvPathToWrite);

@@ -2,6 +2,7 @@
  * The class in charge of running the program.
  */
 
+#include <thread>
 #include "CLI.h"
 #include "Upload.h"
 #include "AlgoSettings.h"
@@ -19,7 +20,7 @@ void CLI::start() {
         // Concatenate all command descriptions
         for (int i = 0; i < 5; ++i) {
             int j = i + 1;
-           menu += std::to_string(j) + ". " + command[i]->description + "\n";
+            menu += std::to_string(j) + ". " + command[i]->description + "\n";
         }
         menu += "8. exit";
         // send to the client
@@ -41,8 +42,12 @@ void CLI::start() {
             command[0]->dio->write(command[0]->dio->terminateClient);
         }
 
-        if (UserSelect >= 0 and UserSelect <= 4) {
+        if (UserSelect >= 0 and UserSelect <= 3) {
             command[UserSelect]->execute();
+            continue;
+        } else if (UserSelect == 4) { // Use thread
+            std::thread t([&](){ command[UserSelect]->execute(); });
+            t.join();
             continue;
         } else {    // Digit is 5-7, 9 or 0
             command[0]->dio->write("Invalid input!\nTry again:");
@@ -50,6 +55,7 @@ void CLI::start() {
         }
     }
 }
+
 
 /**
  * Constructor for the class.

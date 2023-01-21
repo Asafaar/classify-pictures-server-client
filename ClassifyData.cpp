@@ -43,16 +43,16 @@ void ClassifyData::execute() {
             // make for loop,enter the num in the list to vectorV and the name in the
             // end loop to name field
             int sizeofl = listTemp.size();
-            for (int i = 0; i < sizeofl; ++i) {
+            for (int i = 0; i < sizeofl; i++) {
                 long double temp2 = std::stod(listTemp.front());
                 listTemp.pop_front();
                 singleUnclassifiedVector->push_back(temp2);
             }
             vectorToClassify->push_back(singleUnclassifiedVector);
         }
-
-        int d=sizeof(vectorToClassify);
-        for (int i = 0; i <d ; ++i) {
+        this->data->classificationVector = new std::vector<std::string * >;
+        int d=vectorToClassify->size();
+        for (int i = 0; i <d ; i++) {
             this->data->classificationVector->push_back(knn(classifiedVector, *vectorToClassify->at(i), this->data->dis, stoi(this->data->Knum)));
         }
     }

@@ -15,13 +15,12 @@
 const string tempPort = "12346";
 void handle_client(int client_socket){
     char clientInput[4096];
-    int expected_data_len = sizeof(clientInput);
         memset(clientInput, '\0', 4096);
         Data data;
         SocketIO socketIO(client_socket);
         CLI cli = CLI(&data, &socketIO);
         cli.start();
-    close(client_socket);
+    //close(client_socket);
     }
 
 using namespace std;

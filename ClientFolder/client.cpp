@@ -30,10 +30,16 @@ void sendFile(SocketIO *socketIo, string inputLine) {
 }
 
 void createFile(SocketIO *socketIo) {
+    cout << "1" << endl;
     string fileName = socketIo->read(), currServerInput;
+    cout << "2" << endl;
     socketIo->write(socketIo->gotMessage);
+    cout << "3" << endl;
     std::ofstream myFile;
+    cout << "4" << endl;
     myFile.open(fileName);
+    cout << "5" << endl;
+
     while (true) {
         currServerInput = socketIo->read();
         if (currServerInput != socketIo->sendAnswer) {
@@ -41,10 +47,15 @@ void createFile(SocketIO *socketIo) {
             myFile << currServerInput << "\n";
             continue;
         }
+        cout << "6" << endl;
+        socketIo->write(socketIo->gotMessage);
         break;
     }
+    cout << "7" << endl;
     myFile.close();
     return;
+    //../files/wine_classified.csv
+    //../files/wine_unclassified.csv
 }
 
 bool UserLoadCommand(string buffer) {
@@ -76,18 +87,19 @@ int main(int argc, char *argv[]) {
         if (currServerInput != socketIo->sendAnswer) {
             printf("%s\n", currServerInput.c_str());
             loadBool = UserLoadCommand(currServerInput);
-            if (currServerInput == "get data") { downloadBool = true; }
+            if (currServerInput == "Enter path") { downloadBool = true; }
             socketIo->write(socketIo->gotMessage);
-            continue;
-        }
-        // Client wants to download a file
-        if (downloadBool) {
-            createFile(socketIo);
-            downloadBool = false;
             continue;
         }
         string inputLine;
         getline(cin, inputLine);
+        // Client wants to download a file
+        if (downloadBool) {
+            socketIo->write(inputLine);
+            createFile(socketIo);
+            downloadBool = false;
+            continue;
+        }
         // Client wants to send files to the server
         if (loadBool) {
             sendFile(socketIo, inputLine);

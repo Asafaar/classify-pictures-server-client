@@ -51,7 +51,8 @@ bool InputFile::CanReadFile(const string &path) {
     } else { return false; }
 }
 
-/**kNumIsValid
+/**
+ *
  * check if the k num if input user is bigger than 0.
  *
  * @param- k-num the user enter in commend line.

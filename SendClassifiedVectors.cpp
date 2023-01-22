@@ -5,7 +5,13 @@
 #include "mutex"
 #include <thread>
 #include "CLI.h"
-
+#include <iostream>
+#include <cstdio>
+#include <unistd.h>
+#include <cstring>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include "Server.h"
 std::mutex mtx;
 
 
@@ -33,6 +39,7 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
         dio->read();
         return;
     }
+
     // Get path for file
     if (createFile) {
         //std::thread t(handle_client);
@@ -75,6 +82,9 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
 
 */
     // Send all the data
+    int d=sendfilesocket(12360);
+    DefaultIO dio2=SocketIO(d);
+    dio=&dio2;
     int size=data->classificationVector->size();
     std::string classificationToSend;
     for (int i = 0; i < size - 1; i++){
@@ -92,4 +102,37 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
     }
     dio->write("Done sending the vector Classifications.");
     dio->read();
+}
+
+int SendClassifiedVectors::sendfilesocket(int port){
+        int sock = socket(AF_INET, SOCK_STREAM, 0);
+        if (sock < 0) {
+            perror("Error while creating socket!");
+        }
+
+        //Create the socket struct
+        struct sockaddr_in sin;
+        memset(&sin, 0, sizeof(sin));
+        sin.sin_family = AF_INET;
+        sin.sin_addr.s_addr = INADDR_ANY;
+        sin.sin_port = htons(server_port_server+1);
+
+
+        if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+            perror("error binding socket");
+        }
+
+
+            if (listen(sock, 5) < 0) {
+                perror("Error while listening to a socket");
+            }
+            // Allow new client connection
+            struct sockaddr_in client_sin;
+            unsigned int addr_len = sizeof(client_sin);
+            int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+            if (client_sock < 0) {
+                perror("Invalid client socket number!");
+            }
+    return  client_sock;
+
 }

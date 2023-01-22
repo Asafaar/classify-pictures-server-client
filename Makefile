@@ -1,5 +1,5 @@
 #-std=c++11
-all: Server client clean
+all: Server
 Server:  Server.o  InputFile.o SendClassifiedVectors.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o
 	g++ -std=c++11 -pthread  Server.o  SendClassifiedVectors.o InputFile.o KnnClassification.o Data.o ClassifyData.o CLI.o Command.o AlgoSettings.o  Geometry.o SocketIO.o StandareIO.o Upload.o DisplayResults.o DownloadResults.o DefaultIO.o -o Server
 InputFile.o: InputFile.cpp InputFile.h
@@ -34,5 +34,9 @@ Geometry.o: ass1/Geometry.cpp ass1/Geometry.h
 	g++ -std=c++11 -c    ass1/Geometry.cpp
 Server.o: Server.cpp Server.h
 	g++ -std=c++11 -c   Server.cpp
+#client: client.o InputFile.o Geometry.o KnnClassification.o SocketIO.o DefaultIO.o
+#	g++ -std=c++11 -pthread client.o InputFile.o Geometry.o KnnClassification.o SocketIO.o DefaultIO.o -o client
+#client.o: client.cpp
+#	g++ -std=c++11  -c   client.cpp
 .PHONY clean:
 	 rm -f *.o

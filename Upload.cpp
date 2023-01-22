@@ -13,7 +13,11 @@ void Upload::execute() {
     this->dio->write("Please upload your local train CSV file");
     string temp2= this->dio->read();
     this->dio->write(this->dio->sendAnswer);
-
+    if (temp2=="dont good path"){
+        this->dio->write("The path does not good");
+        this->dio->read();
+        return;
+    }
     string temp, newLine = "";
 //    vector<string> s;
     while (newLine != this->dio->sendAnswer) {

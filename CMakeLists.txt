@@ -8,7 +8,7 @@ file(GLOB ass4
         "*.cpp"
         )
 
-add_executable(ass4 Server.cpp Server.h    KnnClassification.cpp KnnClassification.h InputFile.cpp InputFile.h ass1/Geometry.h ass1/Geometry.cpp DefaultIO.cpp DefaultIO.h Command.cpp Command.h Upload.cpp Upload.h )
+add_executable(ass4 Server.cpp Server.h  SendClassifiedVectors.cpp SendClassifiedVectors.h   KnnClassification.cpp KnnClassification.h InputFile.cpp InputFile.h ass1/Geometry.h ass1/Geometry.cpp DefaultIO.cpp DefaultIO.h Command.cpp Command.h Upload.cpp Upload.h )
 set(SOURCE_FILES ${SOURCE_FILES} ass4 ass1/Geometry.cpp ass1/Geometry.h)
 file(GLOB SRC_FILES
         "*.cpp" "*.h"

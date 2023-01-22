@@ -42,17 +42,18 @@ void CLI::start() {
         // Choice == 8 -> close client socket
         if (UserSelect == 7) {
             command[0]->dio->write(command[0]->dio->terminateClient);
+            return;
         }
 
-        if (UserSelect >= 0 and UserSelect <= 3) {
+        if (UserSelect >= 0 and UserSelect <= 4) {
             command[UserSelect]->execute();
             continue;
-        } else if (UserSelect == 4) { // Use thread
-            std::thread t([&](){ command[UserSelect]->execute(); });
-            std::unique_lock<std::mutex> lock(mtx);
-            t.join();
-            mtx.unlock();
-            continue;
+//        } else if (UserSelect == 4) { // Use thread
+//            std::thread t([&](){ command[UserSelect]->execute(); });
+//            std::unique_lock<std::mutex> lock(mtx);
+//            t.join();
+//            mtx.unlock();
+//            continue;
         } else {    // Digit is 5-7, 9 or 0
             command[0]->dio->write("Invalid input!\nTry again:");
             command[0]->dio->read();

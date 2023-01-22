@@ -12,7 +12,7 @@
 #include "SocketIO.h"
 #include "DefaultIO.h"
 #include "DisplayResults.h"
-const string tempPort = "12346";
+//const string tempPort = "12346";
 void handle_client(int client_socket){
     char clientInput[4096];
         memset(clientInput, '\0', 4096);
@@ -20,7 +20,6 @@ void handle_client(int client_socket){
         SocketIO socketIO(client_socket);
         CLI cli = CLI(&data, &socketIO);
         cli.start();
-    //close(client_socket);
     }
 
 using namespace std;
@@ -33,11 +32,17 @@ using namespace std;
  * @param argv - the cmd args. Expected - file name & port number.
  * @return -1 if argv not right, otherwise continues to run.
  */
+
+int server_port_server=0;
 int main(int argc, char *argv[]) {
     //if (InputFromCommandIsInvalid(argc, argv)) {
     //get port number
-    const int server_port = std::stoi(tempPort);
-    InputFile inputFile;
+    if (argc!=2){
+        cout << "Need enter port" << endl;
+        return -1;
+    }
+    const int server_port = std::stoi(argv[1]);
+    server_port_server=server_port;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
     if (sock < 0) {

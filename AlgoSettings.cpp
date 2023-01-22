@@ -22,7 +22,7 @@ void AlgoSettings::stringToArray(std::string *arr[2], std::string clientInput) {
 
     }
     // Create the array
-    auto *k = new string(clientInput.substr(0, i - 1));
+    auto *k = new string(clientInput.substr(0, i ));
     auto *func = new string(clientInput.substr(i));
     arr[0] = k;
     arr[1] = func;
@@ -62,7 +62,7 @@ void AlgoSettings::execute() {
     this->dio->write(this->dio->sendAnswer);
     std::string stringInput = this->dio->read();
     // String is empty
-    if (stringInput == "empty") {
+    if (stringInput.empty()) {
         return;
     } else {
         InputFile inputFile;
@@ -74,17 +74,21 @@ void AlgoSettings::execute() {
         bool disIsOk = inputFile.distanceIsValid(*clientInput[1]);
         // K is not valid
         if (kIsOk)  {
-            this->data->Knum = *clientInput[0];
+//            this->data->Knum = *clientInput[0];
         } else {
             this->dio->write("Invalid value for K");
             this->dio->read();
         }
         // The metric is not valid
         if (disIsOk) {
-            this->data->dis = *clientInput[1];
+//            this->data->dis = *clientInput[1];
         } else {
             this->dio->write("Invalid value for metric");
             this->dio->read();
+        }
+        if (kIsOk && disIsOk){
+            this->data->Knum = *clientInput[0];
+            this->data->dis = *clientInput[1];
         }
         return;
     }

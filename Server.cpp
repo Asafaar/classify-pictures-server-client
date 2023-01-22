@@ -34,6 +34,7 @@ using namespace std;
  */
 
 int server_port_server=0;
+int sockSendfile=0;
 int main(int argc, char *argv[]) {
     //if (InputFromCommandIsInvalid(argc, argv)) {
     //get port number
@@ -60,6 +61,29 @@ int main(int argc, char *argv[]) {
     if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
+
+    //2th server
+    if (sock < 0) {
+        perror("Error while creating socket!");
+    }
+
+    sockSendfile = socket(AF_INET, SOCK_STREAM, 0);
+    //Create the socket struct
+    struct sockaddr_in sin2;
+    memset(&sin2, 0, sizeof(sin2));
+    sin2.sin_family = AF_INET;
+    sin2.sin_addr.s_addr = INADDR_ANY;
+    sin2.sin_port = htons(server_port_server+1);
+    if (bind(sockSendfile, (struct sockaddr *) &sin2, sizeof(sin2)) < 0) {
+        perror("error binding socket");
+    }
+
+
+    if (listen(sock, 5) < 0) {
+        perror("Error while listening to a socket");
+    }
+
+    //end 2th server
 
     while (true) {
         if (listen(sock, 5) < 0) {

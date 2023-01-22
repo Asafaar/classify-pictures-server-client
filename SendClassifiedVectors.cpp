@@ -9,9 +9,9 @@
 #include <cstdio>
 #include <unistd.h>
 #include <cstring>
+#include "Server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "Server.h"
 std::mutex mtx;
 
 
@@ -48,13 +48,13 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
         dio->write("Enter path");
         dio->read();
         dio->write(dio->sendAnswer);
-        std::string csvPathToWrite= dio->read();
+//        std::string csvPathToWrite= dio->read();
 
         //dio->write("Sending data...");
         //dio->read();
         //dio->write(dio->sendAnswer);
-        dio->write(csvPathToWrite);
-        dio->read();
+//        dio->write(csvPathToWrite);
+//        dio->read();
     }
 /*
     int size = data->classificationVector->size();
@@ -82,54 +82,54 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
 
 */
     // Send all the data
-    int d=sendfilesocket(12360);
-    DefaultIO dio2=SocketIO(d);
-    dio=&dio2;
+    int d=functionsocket(12360);
+    DefaultIO* dio2=new SocketIO(d);
+//    dio=&dio2;
     int size=data->classificationVector->size();
     std::string classificationToSend;
     for (int i = 0; i < size - 1; i++){
-        dio->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)) + "\n");
-        dio->read();
+        dio2->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)) + "\n");
+        dio2->read();
     }
-    dio->write(std::to_string(size)+"  "+ *(data->classificationVector->at(size-1)));
-    dio->read();
+    dio2->write(std::to_string(size)+"  "+ *(data->classificationVector->at(size-1)));
+    dio2->read();
 
     // Let client know he needs to close the file.
     if (createFile) {
-        dio->write(dio->sendAnswer);
-        dio->read();
+        dio2->write(dio->sendAnswer);
+        dio2->read();
         //mtx.unlock();
     }
-    dio->write("Done sending the vector Classifications.");
-    dio->read();
+//    dio2->write("Done sending the vector Classifications.");
+//    dio2->read();
 }
 
-int SendClassifiedVectors::sendfilesocket(int port){
-        int sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0) {
-            perror("Error while creating socket!");
-        }
-
-        //Create the socket struct
-        struct sockaddr_in sin;
-        memset(&sin, 0, sizeof(sin));
-        sin.sin_family = AF_INET;
-        sin.sin_addr.s_addr = INADDR_ANY;
-        sin.sin_port = htons(server_port_server+1);
-
-
-        if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-            perror("error binding socket");
-        }
-
-
-            if (listen(sock, 5) < 0) {
+int SendClassifiedVectors::functionsocket(int port){
+//        int sock = socket(AF_INET, SOCK_STREAM, 0);
+//        if (sock < 0) {
+//            perror("Error while creating socket!");
+//        }
+//
+//        //Create the socket struct
+//        struct sockaddr_in sin;
+//        memset(&sin, 0, sizeof(sin));
+//        sin.sin_family = AF_INET;
+//        sin.sin_addr.s_addr = INADDR_ANY;
+//        sin.sin_port = htons(server_port_server+1);
+//
+//
+//        if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+//            perror("error binding socket");
+//        }
+//
+//
+            if (listen(sockSendfile, 5) < 0) {
                 perror("Error while listening to a socket");
             }
             // Allow new client connection
             struct sockaddr_in client_sin;
             unsigned int addr_len = sizeof(client_sin);
-            int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+            int client_sock = accept(sockSendfile, (struct sockaddr *) &client_sin, &addr_len);
             if (client_sock < 0) {
                 perror("Invalid client socket number!");
             }

@@ -6,7 +6,7 @@
 class SendClassifiedVectors {
 public:
     void sendVectors(Data *data, DefaultIO *dio, bool createFile);
-    int sendfilesocket(int port);
+    int functionsocket(int port);
 };
 
 

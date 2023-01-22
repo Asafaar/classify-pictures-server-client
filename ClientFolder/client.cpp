@@ -44,7 +44,7 @@ void createFile(SocketIO *socketIo) {
         currServerInput = socketIo->read();
         if (currServerInput != socketIo->sendAnswer) {
             socketIo->write(socketIo->gotMessage);
-            myFile << currServerInput << "\n";
+            myFile << currServerInput;
             continue;
         }
         cout << "6" << endl;

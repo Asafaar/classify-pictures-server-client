@@ -9,11 +9,13 @@
 #include "ClassifyData.h"
 #include "DisplayResults.h"
 #include "DownloadResults.h"
+#include "mutex"
 
 /**
  * Start running the program.
  */
 void CLI::start() {
+    std::mutex mtx;
     // Keep letting the client choose an option
     while (true) {
         std::string menu = "";
@@ -47,7 +49,9 @@ void CLI::start() {
             continue;
         } else if (UserSelect == 4) { // Use thread
             std::thread t([&](){ command[UserSelect]->execute(); });
+            std::unique_lock<std::mutex> lock(mtx);
             t.join();
+            mtx.unlock();
             continue;
         } else {    // Digit is 5-7, 9 or 0
             command[0]->dio->write("Invalid input!\nTry again:");

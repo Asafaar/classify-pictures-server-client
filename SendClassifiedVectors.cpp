@@ -77,11 +77,12 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
     // Send all the data
     int size=data->classificationVector->size();
     std::string classificationToSend;
-    for (int i = 0; i < size; i++){
-        dio->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)));
+    for (int i = 0; i < size - 1; i++){
+        dio->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)) + "\n");
         dio->read();
     }
-
+    dio->write(std::to_string(size)+"  "+ *(data->classificationVector->at(size-1)));
+    dio->read();
 
     // Let client know he needs to close the file.
     if (createFile) {

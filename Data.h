@@ -5,13 +5,16 @@
 #ifndef ASS4_DATA_H
 #define ASS4_DATA_H
 
+#include <vector>
 #include "string"
+
 class Data {
 public:
-    std::string* path=new std::string;
-    std::string* pathsort=new std::string ;
-    std::string* Knum= (std::string *) "5";
-    std::string*  dis= (std::string *) "EUC";
+    std::string classifiedFile;
+    std::string unclassifiedFile;
+    std::string Knum = "15";
+    std::string dis = "AUC";
+    std::vector<std::string *>* classificationVector=new std::vector<std::string * >;
 };
 
 

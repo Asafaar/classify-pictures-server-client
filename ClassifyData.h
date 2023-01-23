@@ -7,10 +7,13 @@
 
 #include "Command.h"
 #include "Data.h"
-
+#include <vector>
+#include "InputFile.h"
 class ClassifyData:public Command {
 public:
-    ClassifyData(Data* data);
+    ClassifyData(Data* data,DefaultIO *defaultIo1);
+    void execute() override;
+    bool TestUnit(int knum,vector<VectorData*> *classifiedVec, vector<vector<long double> *> *unclassifiedVec);
 };
 
 

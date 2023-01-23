@@ -9,8 +9,13 @@
 
 class DefaultIO {
 public:
-      virtual std::string read();
-     virtual void write(std::string string);
+    std::string gotMessage = "ack";
+    std::string sendAnswer = "done";
+    std::string terminateClient = "terminate";
+
+    virtual std::string read();
+
+    virtual void write(std::string string);
 };
 
 

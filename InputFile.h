@@ -28,8 +28,10 @@ public:
          string* clientInputWork(char clientInput[], string filename, int clientInputSize);
          vector<long double> fromStringVectorToLongDouble(vector<string> stringvactor);
          string * InvalidInputString();
-         bool CanreadFile(const string &path);
+         bool CanReadFile(const string &path);
          bool IfKnumAndDistaneGood (const string &path,Data data);
+         bool IfCsvPathToMakeValid(const string &path);
+         void LoadDataFromString(const string StringFile, std::vector<VectorData *> *data);
 };
 
 #endif //ASS2_KNN_INPUTFILE_H

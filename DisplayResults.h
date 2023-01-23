@@ -8,7 +8,9 @@
 #include "Command.h"
 class DisplayResults: public Command {
 public:
-    DisplayResults(Data* data);
+    DisplayResults(Data *data, DefaultIO *defaultIo1);
+    void execute() override;
+
 };
 
 

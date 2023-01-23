@@ -8,10 +8,12 @@
 #include "Command.h"
 #include "Data.h"
 
-class Upload :public virtual Command {
+class Upload : public  Command {
 public:
-     Upload(Data* data);
+     Upload(Data* data,DefaultIO *defaultIo1);
      void changepath(std::string path, std::string pathsort);
+    void execute() override;
+
 };
 
 

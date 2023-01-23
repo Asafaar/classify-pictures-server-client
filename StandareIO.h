@@ -6,7 +6,8 @@
 #define ASS4_STANDAREIO_H
 
 #include "DefaultIO.h"
-class StandareIO:DefaultIO {
+class StandareIO:public DefaultIO {
+public:
 
 };
 

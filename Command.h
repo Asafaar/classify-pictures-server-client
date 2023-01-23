@@ -7,13 +7,14 @@
 
 #include "DefaultIO.h"
 #include "Data.h"
-
-class Command :DefaultIO {
+#include "StandareIO.h"
+class Command  {
 public:
         std::string  description;
-        DefaultIO dio;
+        DefaultIO *dio;
         Data* data;
-       virtual void execute();
+
+    virtual void execute() ;
 
 };
 

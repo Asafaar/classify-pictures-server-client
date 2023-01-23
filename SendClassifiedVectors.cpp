@@ -12,10 +12,11 @@
 #include "Server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
+
 std::mutex mtx;
 
 
-void handle_client(Data *data, DefaultIO* defaultIo) {
+void handle_client(Data *data, DefaultIO *defaultIo) {
     CLI cli = CLI(data, defaultIo);
     cli.start();
 }
@@ -26,20 +27,21 @@ void handle_client(Data *data, DefaultIO* defaultIo) {
  * @param dio - The DefaultIo to send the info through.
  * @param createFile - Flag to decide whether the client needs to create a file out of the info.
  */
-void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createFile){
+void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createFile) {
     // Not all info is valid
-    if (data->classifiedFile.empty() or data->unclassifiedFile.empty()){
+    if (data->classifiedFile.empty() or data->unclassifiedFile.empty()) {
         dio->write("Upload the data please.");
         dio->read();
         return;
     }
     // Data still isn't classified
-    if (data->classificationVector->empty()){
+    if (data->classificationVector->empty()) {
         dio->write("Classify the data please.");
         dio->read();
         return;
     }
 
+    DefaultIO *currentDio = dio;
     // Get path for file
     if (createFile) {
         //std::thread t(handle_client);
@@ -55,6 +57,9 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
         //dio->write(dio->sendAnswer);
 //        dio->write(csvPathToWrite);
 //        dio->read();
+        int d = functionsocket(12360);
+        DefaultIO *dio2 = new SocketIO(d);
+        currentDio = dio2;
     }
 /*
     int size = data->classificationVector->size();
@@ -82,29 +87,33 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
 
 */
     // Send all the data
-    int d=functionsocket(12360);
-    DefaultIO* dio2=new SocketIO(d);
+    //int d = functionsocket(12360);
+    //DefaultIO *dio2 = new SocketIO(d);
 //    dio=&dio2;
-    int size=data->classificationVector->size();
+    int size = data->classificationVector->size();
     std::string classificationToSend;
-    for (int i = 0; i < size - 1; i++){
-        dio2->write(std::to_string(i + 1)+"  "+ *(data->classificationVector->at(i)) + "\n");
-        dio2->read();
+    for (int i = 0; i < size - 1; i++) {
+        currentDio->write(std::to_string(i + 1) + "  " + *(data->classificationVector->at(i)));
+        currentDio->read();
+        if (createFile) {
+            currentDio->write("\n");
+            currentDio->read();
+        }
     }
-    dio2->write(std::to_string(size)+"  "+ *(data->classificationVector->at(size-1)));
-    dio2->read();
+    currentDio->write(std::to_string(size) + "  " + *(data->classificationVector->at(size - 1)));
+    currentDio->read();
 
     // Let client know he needs to close the file.
     if (createFile) {
-        dio2->write(dio->sendAnswer);
-        dio2->read();
+        currentDio->write(dio->sendAnswer);
+        currentDio->read();
         //mtx.unlock();
     }
 //    dio2->write("Done sending the vector Classifications.");
 //    dio2->read();
 }
 
-int SendClassifiedVectors::functionsocket(int port){
+int SendClassifiedVectors::functionsocket(int port) {
 //        int sock = socket(AF_INET, SOCK_STREAM, 0);
 //        if (sock < 0) {
 //            perror("Error while creating socket!");
@@ -123,16 +132,16 @@ int SendClassifiedVectors::functionsocket(int port){
 //        }
 //
 //
-            if (listen(sockSendfile, 5) < 0) {
-                perror("Error while listening to a socket");
-            }
-            // Allow new client connection
-            struct sockaddr_in client_sin;
-            unsigned int addr_len = sizeof(client_sin);
-            int client_sock = accept(sockSendfile, (struct sockaddr *) &client_sin, &addr_len);
-            if (client_sock < 0) {
-                perror("Invalid client socket number!");
-            }
-    return  client_sock;
+    if (listen(sockSendfile, 5) < 0) {
+        perror("Error while listening to a socket");
+    }
+    // Allow new client connection
+    struct sockaddr_in client_sin;
+    unsigned int addr_len = sizeof(client_sin);
+    int client_sock = accept(sockSendfile, (struct sockaddr *) &client_sin, &addr_len);
+    if (client_sock < 0) {
+        perror("Invalid client socket number!");
+    }
+    return client_sock;
 
 }

@@ -2,24 +2,12 @@
  * A class meant to send a vector of Vectors to the client.
  */
 #include "SendClassifiedVectors.h"
-#include "mutex"
-#include <thread>
 #include "CLI.h"
-#include <iostream>
 #include <cstdio>
 #include <unistd.h>
-#include <cstring>
 #include "Server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
-
-std::mutex mtx;
-
-
-void handle_client(Data *data, DefaultIO *defaultIo) {
-    CLI cli = CLI(data, defaultIo);
-    cli.start();
-}
 
 /**
  * Send all the vectors through a given defaultIO.
@@ -44,52 +32,14 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
     DefaultIO *currentDio = dio;
     // Get path for file
     if (createFile) {
-        //std::thread t(handle_client);
-        //t.detach();
-        //std::unique_lock<std::mutex> lock(mtx);
         dio->write("Enter path");
         dio->read();
         dio->write(dio->sendAnswer);
-//        std::string csvPathToWrite= dio->read();
-
-        //dio->write("Sending data...");
-        //dio->read();
-        //dio->write(dio->sendAnswer);
-//        dio->write(csvPathToWrite);
-//        dio->read();
         int d = functionsocket(12360);
         DefaultIO *dio2 = new SocketIO(d);
         currentDio = dio2;
     }
-/*
-    int size = data->classificationVector->size();
-    std::string classificationToSend;
-    if (createFile) {
-        std::vector<std::thread> threads;
-        for (int i = 0; i < size; i++) {
-            threads.emplace_back([dio, i, classification = data->classificationVector->at(i)](){
-                dio->write(std::to_string(i + 1) + "  " + *classification);
-                dio->read();
-            });
-        }
-        for (std::thread& t : threads) {
-            t.join();
-        }
-    }
-    else {
-        for (int i = 0; i < size; i++) {
-            dio->write(std::to_string(i + 1) + "  " + *(data->classificationVector->at(i)));
-            dio->read();
-        }
-    }
-
-
-
-*/
     // Send all the data
-    //int d = functionsocket(12360);
-    //DefaultIO *dio2 = new SocketIO(d);
-//    dio=&dio2;
     int size = data->classificationVector->size();
     std::string classificationToSend;
     for (int i = 0; i < size - 1; i++) {
@@ -107,41 +57,19 @@ void SendClassifiedVectors::sendVectors(Data *data, DefaultIO *dio, bool createF
     if (createFile) {
         currentDio->write(dio->sendAnswer);
         currentDio->read();
-        //mtx.unlock();
     }
-//    dio2->write("Done sending the vector Classifications.");
-//    dio2->read();
 }
 
 int SendClassifiedVectors::functionsocket(int port) {
-//        int sock = socket(AF_INET, SOCK_STREAM, 0);
-//        if (sock < 0) {
-//            perror("Error while creating socket!");
-//        }
-//
-//        //Create the socket struct
-//        struct sockaddr_in sin;
-//        memset(&sin, 0, sizeof(sin));
-//        sin.sin_family = AF_INET;
-//        sin.sin_addr.s_addr = INADDR_ANY;
-//        sin.sin_port = htons(server_port_server+1);
-//
-//
-//        if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-//            perror("error binding socket");
-//        }
-//
-//
     if (listen(sockSendfile, 5) < 0) {
         perror("Error while listening to a socket");
     }
     // Allow new client connection
-    struct sockaddr_in client_sin;
+    struct sockaddr_in client_sin{};
     unsigned int addr_len = sizeof(client_sin);
     int client_sock = accept(sockSendfile, (struct sockaddr *) &client_sin, &addr_len);
     if (client_sock < 0) {
         perror("Invalid client socket number!");
     }
     return client_sock;
-
 }

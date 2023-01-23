@@ -23,15 +23,12 @@ std::mutex mtx;
 */
 
 void sendFile(SocketIO *socketIo, string inputLine) {
-    //cout << "in func" << endl;
     std::fstream filePath(inputLine);
     while(!filePath.good()) {
         printf("The file doesn't exist!\nEnter a new path:\n");
         getline(cin, inputLine);
         filePath.open(inputLine);
     }
-    //if (filePath.is_open()){filePath.close();}
-    //cout << "out of loop" << endl;
     std::fstream file;
     file.open(inputLine, ios::in);
     if (file.is_open()) {
@@ -41,43 +38,34 @@ void sendFile(SocketIO *socketIo, string inputLine) {
             socketIo->read();
         }
         filePath.close();
-        //cout << "closed file" << endl;
         socketIo->write(socketIo->sendAnswer);
-        //cout << "sent answer" << endl;
-        //socketIo->read();
-        //cout << "leaving func" << endl;
     }
     return;
 }
 
 void createFile(SocketIO *socketIo, string fileName) {
+    FILE* file = fopen(fileName.c_str(), "w");;
+    while(!file) {
+        printf("Tha path isn't valid! Enter a new one:\n");
+        getline(cin, fileName);
+        file = fopen(fileName.c_str(), "w");
+    }
+    fclose(file);
+    std::fstream myFile;
+    myFile.open(fileName, ios::out);
     string currServerInput;
-
-    std::ofstream myFile;
-
-    myFile.open(fileName);
     if (myFile.is_open()) {
-
         while (true) {
-//            currServerInput = socketIo->read();
             currServerInput = socketIo->read();
             if (currServerInput != socketIo->sendAnswer) {
                 socketIo->write(socketIo->gotMessage);
                 myFile << currServerInput;
                 continue;
             }
-
             socketIo->write(socketIo->gotMessage);
-//            currServerInput = socketIo->read();
             break;
         }
-
         myFile.close();
-        return;
-        //../files/wine_classified.csv
-        //../files/wine_unclassified.csv
-    } else {
-        cout << "The path isn't valid." << endl;
         return;
     }
 }
@@ -92,7 +80,6 @@ bool UserLoadCommand(string buffer) {
 int port_no = 0;
 
 void socketforfile(const char *ip_address, int serverPort, string filename) {
-//    const char *ip_address = "127.0.0.1"; for bebug
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) { perror("error creating socket"); }
     struct sockaddr_in sin;
@@ -102,16 +89,10 @@ void socketforfile(const char *ip_address, int serverPort, string filename) {
     sin.sin_port = htons(port_no + 1);
     auto *socketIo = new SocketIO(sock);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server"); }
-    bool loadBool = false, downloadBool = false;
     char clientInput[4096];
     memset(clientInput, '\0', 4096);
     // Get info from client
-    int expected_data_len = sizeof(clientInput);
-//    int clientInputSize = recv(sock, clientInput, expected_data_len, 0);
-//    printf("%s\n", clientInput);
     createFile(socketIo, filename);
-//    close(sock);
-    cout << "8" << endl;
     return;
 
 }
@@ -161,8 +142,6 @@ int main(int argc, char *argv[]) {
         // Client wants to download a file
 
         if (downloadBool) {
-//            socketIo->write(inputLine);
-//            createFile(socketIo);
             std::thread t1(socketforfile, ip_address, serverPort, inputLine);
             downloadBool = false;
             t1.join();
@@ -170,7 +149,6 @@ int main(int argc, char *argv[]) {
         }
         // Client wants to send files to the server
         if (loadBool) {
-            //cout << "aaaaaaaaaa" << endl;
             sendFile(socketIo, inputLine);
             loadBool = false;
             continue;

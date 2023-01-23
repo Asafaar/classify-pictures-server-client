@@ -62,7 +62,9 @@ void AlgoSettings::execute() {
     this->dio->write(this->dio->sendAnswer);
     std::string stringInput = this->dio->read();
     // String is empty
-    if (stringInput.empty()) {
+    if (stringInput.empty() || stringInput[0] == ' ') {
+        this->dio->write("Invalid input!");
+        this->dio->read();
         return;
     } else {
         InputFile inputFile;

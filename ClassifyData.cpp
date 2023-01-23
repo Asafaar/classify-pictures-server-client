@@ -21,7 +21,8 @@ void ClassifyData::execute() {
         this->dio->write("Upload the data please");
         this->dio->read();
         return;
-    } else {
+
+    } try {
         InputFile inputFile;
         auto *classifiedVector = new std::vector<VectorData *>;
         auto vectorToClassify = new std::vector<vector<long double> *>;
@@ -62,6 +63,11 @@ void ClassifyData::execute() {
         this->dio->write("The vectors are not of the same size or knum is too big");
         this->dio->read();
         return;}
+    }
+    catch (...){
+        this->dio->write("The files are not good");
+        this->dio->read();
+        return;
     }
 }
 bool ClassifyData::TestUnit(int knum,vector<VectorData*> *classifiedVec,   std::vector<vector<long double> *> *unclassifiedVec){

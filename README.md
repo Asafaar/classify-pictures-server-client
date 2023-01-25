@@ -16,6 +16,11 @@ To run the program:
 
 make
 
-to run the Server- ./Server {file name} {port}
+to run the Server- ./Server {port}
 
 to run the clinet ./client {ip} {port}
+
+
+important things:
+1.The program needs two free ports,the port you write in the coomand line and the port after him.(For example: ./Server 12345. so the server needs the ports 12345 and 12346)
+2.It is recommended to read the files from the folder names "fiels",so if you want read new file move him to this folder.

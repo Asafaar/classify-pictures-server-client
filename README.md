@@ -1,26 +1,37 @@
-part 4 of advanced programming class
+# VectorVision: Precise Vector Classification Software
 
-In this assignment the program recievs input from the client indicating how and where to run a knn algorithm.
-The algorithm classifies an unclassified vector according to a list with classified vectors.
-The k of the algorithm - the number of the k closest classified vectors to classify the vector with, is given as input.
-The client may enter a chosen distance calculation metric. He may choos one of the metrics below:
-Minkowski - MIN
-Euclidean - AUC
-Manhattan - MAN
-Chebyshev - CHB
-Canberra - CAN
+VectorVision stands as a sophisticated software solution meticulously crafted to deliver pinpoint vector classification using the K-Nearest Neighbors (KNN) algorithm. Empowering users with unparalleled precision, this potent tool seamlessly integrates client inputs to orchestrate the execution of the KNN algorithm, ensuring optimal performance and accuracy.
 
-Please note that the k param needs to be larger then the number of vectors in the classified file.
+## Key Features
 
-To run the program:
+- **Customizable K Parameter**: Users wield the power to customize the 'k' parameter, dictating the number of nearest classified vectors utilized to ascertain the classification of an unclassified vector. The 'k' value must surpass the count of vectors within the classified dataset, guaranteeing precise classification.
+- **Flexible Distance Metrics**: VectorVision offers a spectrum of distance calculation metrics, catering to diverse analytical requirements. Users can effortlessly select from a range of metrics, including:
+  - Minkowski (MIN)
+  - Euclidean (AUC)
+  - Manhattan (MAN)
+  - Chebyshev (CHB)
+  - Canberra (CAN)
+  
+## Installation and Usage
+### Installation
+Begin by cloning the code repository from GitHub.
 
-make
+### Compilation
+To compile the project, navigate to the project directory, open the command prompt, and execute the following commands:
+```bash``` 
+```make```
 
-to run the Server- ./Server {port}
+### Server
+Initiate a server by opening a port using the following command in the command prompt:
+```./Server {port}```
 
-to run the clinet ./client {ip} {port}
+### Client
+In the project directory, open a new command prompt window and input the following commands:
+```bash```
+```./client {ip} {ServerPort}```
 
+For local testing, it's recommended to use the IP address 127.0.0.1.
 
-important things:
-1.The program needs two free ports,the port you write in the coomand line and the port after him.(For example: ./Server 12345. so the server needs the ports 12345 and 12346)
-2.It is recommended to read the files from the folder names "fiels",so if you want read new file move him to this folder.
+## <br /><br />Authors
+- [Aharon Gross](https://github.com/AharonGross1)
+- [Asaf Rozen](https://www.github.com/asafaar)
